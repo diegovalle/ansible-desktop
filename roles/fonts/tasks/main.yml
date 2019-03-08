@@ -1,0 +1,86 @@
+- apt_repository:
+    repo: "{{item}}"
+  register: multiverse_installed
+  when: ansible_distribution == 'Ubuntu'
+  with_items:
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
+    - 'deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+    - 'deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+
+- apt:
+    pkg:
+      - libfreetype6
+      - libfreetype6-dev
+      - libfontconfig
+    state: latest
+
+- name: Accept License
+  shell: 'echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections'
+
+- apt: pkg=ttf-mscorefonts-installer state=latest
+
+- name: Update distro
+  apt: upgrade=dist update_cache=yes
+
+- name: Create temp dir for downloading the fonts
+  command: mktemp -d /tmp/fonts.XXXXXXXX
+  register: mktemp_output
+
+- name: Dowload abobe reader .deb
+  get_url: url={{ adobe_reader_url }} dest='{{mktemp_output.stdout}}/adobe_reader.deb'
+
+- name: Extract Adobe Reader .deb
+  command: dpkg -x adobe_reader.deb reader chdir={{ mktemp_output.stdout }}
+
+- name: Set permissions for Adobe Reader directory
+  file: path="{{ mktemp_output.stdout }}/reader" recurse=yes owner=root group=root mode=0644 state=directory
+
+- name: Make sure /usr/share/fonts/opentype exits
+  file: path=/usr/share/fonts/opentype state=directory
+
+- name: Make sure /usr/share/fonts/truetype exits
+  file: path=/usr/share/fonts/truetype state=directory
+
+- name: Copy Adobe Reader fonts to /usr/share/fonts/opentype
+  shell: cp *.otf /usr/share/fonts/opentype chdir={{ mktemp_output.stdout }}/reader/opt/Adobe/Reader9/Resource/Font/
+
+- name: Download google fonts
+  get_url: url={{ google_fonts_url }} dest='{{mktemp_output.stdout}}/google-fonts.zip'
+
+- name: Install google fonts
+  shell: unzip -jo '{{mktemp_output.stdout}}/google-fonts.zip' '*.ttf' -d /usr/share/fonts/truetype warn=false
+
+- name: Download Abobe Source Code Pro
+  get_url: url={{ adobe_source_code_pro_url }} dest='{{mktemp_output.stdout}}/adobe_src_pro.zip'
+
+- name: Install Above Source Code Pro
+  command: unzip -jo {{mktemp_output.stdout}}/adobe_src_pro.zip "*.ttf" -d /usr/share/fonts/truetype warn=false
+
+- name: Update font cache
+  shell: sudo fc-cache -f -v 
+#- name: Clone nerd fonts
+#  git: repo=https://github.com/ryanoasis/nerd-fonts dest={{mktemp_output.stdout}}/nerd-fonts force=yes
+
+#- name: Install nerd fonts
+#  command: install.sh chdir={{mktemp_output.stdout}}/nerd-fonts
+#  become: yes
+#  become_user: "{{ username }}"
+
+#- name: Download MS fonts
+#  get_url: url=http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe dest='{{mktemp_output.stdout}}/PowerPointViewer.exe'
+
+#- name: cabextract MS fonts
+#  command: cabextract -L -F ppviewer.cab PowerPointViewer.exe chdir={{mktemp_output.stdout}}
+
+#- name: cabextract MS fonts
+#  command: cabextract --lowercase ppviewer.cab chdir={{mktemp_output.stdout}}
+
+#- name: Install MS fonts
+#  shell: cp *.ttf /usr/share/fonts/truetype chdir={{mktemp_output.stdout}}
+
+- name: Make sure /home/diego/.config/fontconfig/ exits
+  file: path=/home/{{ username }}/.config/fontconfig/ state=directory
+
+- name: Copy .fonts.conf
+  copy: src=.fonts.conf dest=/home/{{ username }}/.config/fontconfig/.fonts.conf

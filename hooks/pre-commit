@@ -1,0 +1,4 @@
+#!/bin/sh
+# Redirect output to stderr.
+exec 1>&2
+ansible-playbook -i tests/inventory playbook.yml --syntax-check

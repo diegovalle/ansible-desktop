@@ -1,0 +1,3 @@
+---
+file1: 50-yubikey.rules
+file2: 70-u2f.rules

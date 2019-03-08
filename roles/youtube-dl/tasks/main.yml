@@ -1,0 +1,5 @@
+- name: pip youtube-dl
+  pip:
+    name:
+      - youtube-dl
+    executable: pip3

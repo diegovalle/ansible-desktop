@@ -1,0 +1,5 @@
+---
+# rstudio_ver : '0.99.903'
+rstudio_arch: 'i386'
+rstudio_deb: 'rstudio-{{ rstudio_ver.stdout }}-{{ rstudio_arch }}.deb'
+rstudio_deb_url: 'http://download1.rstudio.org/{{ rstudio_deb }}'

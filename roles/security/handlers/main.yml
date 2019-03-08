@@ -1,0 +1,3 @@
+- name: flush routing cache
+  shell: echo 1 > /proc/sys/net/ipv4/route/flush   
+  when: testing != 'true'  

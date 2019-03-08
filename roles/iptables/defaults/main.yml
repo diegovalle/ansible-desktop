@@ -1,0 +1,3 @@
+---
+iptables_file_v4: rules.v4
+iptables_file_v6: rules.v6

@@ -1,0 +1,70 @@
+- name: Install Packages
+  apt: name="{{ item }}" state=latest
+  with_items:
+    - build-essential
+    - cmake
+    - qtbase5-dev
+    - qt4-default
+    - libqt5x11extras5-dev
+    - qttools5-dev
+    - qttools5-dev-tools
+    - libgcrypt20-dev
+    - zlib1g-dev
+    - libxi-dev
+    - libxtst-dev
+    - gnupg-curl
+
+- name: Create temp directory for downloading keepassx2
+  command: mktemp -d /tmp/keepassx2.XXXXXX
+  register: mktemp_output
+
+- name: Change tmp directory permissions
+  file:
+    path: "{{ mktemp_output.stdout }}"
+    state: directory
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Download keepassx2
+  get_url:
+    url: https://www.keepassx.org/releases/{{ keypassx_version }}/keepassx-{{ keypassx_version }}.tar.gz
+    dest: "{{ mktemp_output.stdout }}/keepass.tar.gz"
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Download keepassx2 signature
+  get_url:
+    url: https://www.keepassx.org/releases/{{ keypassx_version }}/keepassx-{{ keypassx_version }}.tar.gz.sig
+    dest: "{{ mktemp_output.stdout }}/keepass.tar.gz.sig"
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Get GPG key
+  command: gpg --keyserver keyserver.ubuntu.com --recv-keys 0xFE22C6FD83135D45
+  #become: true
+  #become_user: "{{ username }}"
+
+- name: Verify downloaded archive
+  command: gpg --verify keepass.tar.gz.sig keepass.tar.gz chdir={{ mktemp_output.stdout }}
+  #become: true
+  #become_user: "{{ username }}"
+
+- name: Extract keepassx archive
+  shell: tar -xf {{ mktemp_output.stdout }}/keepass.tar.gz -C {{ mktemp_output.stdout }}
+
+- name: Create build directory
+  file:
+    path: "{{ mktemp_output.stdout }}/keepassx-{{ keypassx_version }}/build"
+    state: directory
+
+- name: cmake
+  command: cmake .. chdir={{ mktemp_output.stdout }}/keepassx-{{ keypassx_version }}/build
+
+- name: Make
+  command: make -j{{ ansible_processor_cores }} chdir={{ mktemp_output.stdout }}/keepassx-{{ keypassx_version }}/build
+
+- name: Make install
+  command: make install chdir={{ mktemp_output.stdout }}/keepassx-{{ keypassx_version }}/build

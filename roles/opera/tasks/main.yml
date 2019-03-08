@@ -1,0 +1,10 @@
+- name: Install Opera Key
+  apt_key: url=https://deb.opera.com/archive.key state=present
+
+- name: Add Opera Repo
+  apt_repository: repo='deb https://deb.opera.com/opera-stable/ stable non-free'
+
+- name: Install Packages
+  apt:
+    pkg: opera-stable
+    state: latest

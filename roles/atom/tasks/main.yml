@@ -1,0 +1,10 @@
+---
+- name: Create temp file for downloading the atom .deb
+  command: mktemp -d /tmp/ansible.XXXXXXXX
+  register: mktemp_output
+
+- name: Download Atom
+  get_url: url='https://atom.io/download/deb' dest='{{mktemp_output.stdout}}/atom-amd64.deb'
+
+- name: Install Atom
+  apt: deb='{{mktemp_output.stdout}}/atom-amd64.deb'

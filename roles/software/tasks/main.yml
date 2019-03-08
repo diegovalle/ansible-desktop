@@ -1,0 +1,106 @@
+- name: Install Packages
+  apt:
+    pkg:
+      - curl
+      - man-db
+      - unzip
+      - zip
+      - hopenpgp-tools
+      - sudo
+      - locales
+      - emacs
+      - htop
+      - wget
+      - curl
+      - tor
+      - chromium-browser
+      - gnupg
+      - vlc
+      - smplayer
+      - rhythmbox
+      - imagemagick
+      - ipython
+      - ispell
+      - jpegoptim
+      - optipng
+      - sqlite3
+      - firefox
+      - zsh
+      - deluge
+      - gnupg
+      - telnet
+      - unrar
+      - whois
+      - python-dev
+      - python3-dev
+      - python-qt4
+      - python-sphinx
+      - filezilla
+      - virtualenvwrapper
+      - libffi-dev
+      - gcc
+      - virtualbox
+      - ca-certificates
+      - vagrant
+      - xubuntu-restricted-extras
+      - libavcodec-extra
+      - gimp
+      - typecatcher
+      - gdebi
+      - p7zip-full
+      - p7zip-rar
+      - silversearcher-ag
+      - libssl-dev
+      - audacious
+      - qpdfview
+      - shellcheck
+      - openvpn
+      - network-manager-openvpn
+      - network-manager-openvpn-gnome
+      - sqlitebrowser
+      - libv8-3.14-dev
+      - poedit
+      - aspell-es
+      - myspell-es
+      - traceroute
+      - xclip
+      - libudunits2-dev
+      - libfreetype6-dev
+      - colordiff
+      - siege
+      - lynx
+      - libcairo2-dev
+      - libpoppler-cpp-dev
+      - libmagick++-dev
+      - python3-libtorrent
+    state: present
+
+- apt:
+    pkg:
+      - firejail
+    state: latest
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
+
+# - name: Download get-pip.py
+#   get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py mode=0755
+# - name: Install pip from source
+#   command: "python2 /tmp/get-pip.py"
+#   args:
+#     creates: "/usr/local/bin/pip2"
+# - name: Install pip from source
+#   command: "python3 /tmp/get-pip.py"
+#   args:
+#     creates: "/usr/local/bin/pip3"
+
+- name: pip various utilities
+  pip:
+    name:
+      - setuptools
+      - virtualenvwrapper
+      - httpie
+      - magic-wormhole
+      - flexget
+    executable: pip3
+    extra_args: --user
+  become: yes
+  become_user: "{{ username }}"

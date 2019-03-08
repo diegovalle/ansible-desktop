@@ -1,0 +1,21 @@
+
+- name: Create temp directory for downloading borg
+  command: mktemp -d /tmp/borg.XXXXXX
+  register: mktemp_output
+
+- name: Download borg
+  get_url:
+    url: "{{ standalone_download_url }}"
+    dest: "{{ mktemp_output.stdout }}/borg"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Move borg to /usr/local/bin/
+  copy:
+    src="{{ mktemp_output.stdout }}//borg"
+    dest=/usr/local/bin/borg
+    owner=root
+    group=root
+    mode=0755
+    remote_src=true

@@ -1,0 +1,12 @@
+- name: set firewall rules v4
+  copy: src={{ file1 }} dest=/etc/udev/rules.d/50-yubikey.rules owner=root group=root mode=644
+  notify:
+    - restart udev
+
+- name: set firewall rules v6
+  copy: src={{ file2 }} dest=/etc/udev/rules.d/70-u2f.rules owner=root group=root mode=644
+  notify:
+    - restart udev
+
+- name: restart udev
+  service: name=udev state=restarted

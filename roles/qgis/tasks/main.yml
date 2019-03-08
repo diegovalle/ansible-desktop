@@ -1,0 +1,40 @@
+- name: update apt
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: Install base packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - build-essential
+    - python-setuptools
+    - python-dev
+    - git
+
+- name: Add qgis repository key
+  apt_key: url=http://qgis.org/downloads/qgis-2017.gpg.key state=present
+
+#- name: Add repository key
+#  apt_key: id=073D307A618E5811
+#           keyserver=keyserver.ubuntu.com
+#           state=present
+
+- name: Add repository
+  apt_repository: repo="deb http://qgis.org/debian {{ansible_distribution_release}} main"
+                  state=present
+
+- name: Add repository
+  apt_repository: repo="deb-src http://qgis.org/debian {{ansible_distribution_release}} main" state=present
+
+- name: Install qgis packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - qgis
+    - python-qgis
+    - qgis-plugin-grass
+
+    

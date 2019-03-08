@@ -1,0 +1,58 @@
+# - name: Install Packages
+#   apt: name="{{ item }}" state=latest
+#   with_items:
+#     - nautilus-dropbox
+#     - libappindicator1
+
+- name: Install Dropbox control script
+  get_url: dest=/usr/local/bin/dropbox.py url=https://www.dropbox.com/download?dl=packages/dropbox.py mode=0755
+
+- name: Create dropbox dir
+  file:
+    path: /home/{{ username }}/firejail/dropbox/Dropbox
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "u+rw,o-rw"
+
+- name: Create symlink from  ~/firejail/dropbox/Dropbox to ~/Dropbox
+  file:
+    src: /home/{{ username }}/firejail/dropbox/Dropbox
+    dest:  /home/{{ username }}/Dropbox
+    state: link
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "u+rw,o-rw"
+
+- name: Install Dropbox
+  shell: curl -L "https://www.dropbox.com/download?plat=lnx.{{ dropbox_arch }}" | tar -C /home/{{ username }}/firejail/dropbox -xzf - creates=/home/{{ username }}/firejail/dropbox/.dropbox-dist/dropboxd
+
+- name: Create dropbox autostart dir
+  file:
+    path: /home/{{ username }}/.config/autostart/
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+
+
+- name: Configure dropbox autostart
+  copy:
+    src: dropbox.desktop
+    dest: /home/{{ username }}/.config/autostart/dropbox.desktop
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0755
+
+# - name: Run firejail --private=~/firejail/dropbox '.dropbox-dist/dropboxd' to finish setup
+#   shell: ":"
+
+#nohup firejail --private=~/firejail/dropbox ".dropbox-dist/dropboxd && sleep inf"&
+# - name: Check dropboxd status
+#   command: /usr/local/bin/dropbox.py status
+#   register: status
+
+# - name: Start dropboxd
+#   shell: /usr/local/bin/dropbox.py start >/dev/null 2>&1
+#   when: status.stdout == "Dropbox isn't running!"
+
+#

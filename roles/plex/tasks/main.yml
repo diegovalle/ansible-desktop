@@ -1,0 +1,21 @@
+---
+- name: Install gdebi to ensure dependencies are met
+  action: apt pkg={{ item }} state=present
+  register: result
+  with_items:
+    - gdebi
+
+- name: Download plex .deb
+  get_url: url={{ plex_download }} dest=/tmp/plexmediaserver.deb
+
+- name: Install plex
+  command: "gdebi /tmp/plexmediaserver.deb"
+
+# Start it
+#- name: Ensure plex is running
+#  service: name=plexmediaserver state=started
+
+- group: name=plex state=present
+
+- name: Create a directory for media
+  file: path=/media/plex state=directory owner="{{ username }}" group=plex mode=0664

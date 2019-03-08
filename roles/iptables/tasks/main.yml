@@ -1,0 +1,17 @@
+- name: install iptables-persistent
+  apt: pkg=iptables-persistent state=present update_cache=true
+  notify:
+    - start iptables-persistent
+
+- name: set firewall rules v4
+  copy: src={{ iptables_file_v4 }} dest=/etc/iptables/rules.v4 owner=root group=root mode=644
+  notify:
+    - restart iptables-persistent
+
+- name: set firewall rules v6
+  copy: src={{ iptables_file_v6 }} dest=/etc/iptables/rules.v6 owner=root group=root mode=644
+  notify:
+    - restart iptables-persistent
+
+- name: ensure iptables-persistent restarted
+  service: name=netfilter-persistent state=restarted

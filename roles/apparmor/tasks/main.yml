@@ -1,0 +1,51 @@
+---
+- name: Install Apparmor
+  when: testing != 'true'
+  apt:
+    pkg:
+      - apparmor
+      - apparmor-utils
+      - apparmor-profiles
+    state: present
+    update_cache: yes
+
+
+- name: example copying file with owner and permissions
+  copy:
+    src: files/abstractions
+    dest: /etc/apparmor.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: example copying file with owner and permissions
+  copy:
+    src: files/tunables
+    dest: /etc/apparmor.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: example copying file with owner and permissions
+  copy:
+    src: files/usr.bin.ricochet
+    dest: /etc/apparmor.d/usr.bin.ricochet
+    owner: root
+    group: root
+    mode: 0644
+
+- name: example copying file with owner and permissions
+  copy:
+    src: files/usr.bin.youtube-dl
+    dest: /etc/apparmor.d/usr.bin.youtube-dl
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enforce profile
+  when: testing != 'true'
+  command: aa-enforce /etc/apparmor.d/usr.bin.youtube-dl
+
+- name: Enforce profile
+  when: testing != 'true'
+  command: aa-enforce /usr/bin/ricochet

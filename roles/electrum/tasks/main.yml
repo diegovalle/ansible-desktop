@@ -1,0 +1,51 @@
+- name: Install Packages
+  apt:
+    pkg:
+      - python-dev
+      - python3-pyqt5
+      - python3-setuptools
+      - pyqt5-dev-tools
+      - python3-setuptools
+      - python3-pyqt5
+      - python3-pip
+
+
+- name: Create temp directory for downloading electrum
+  command: mktemp -d /tmp/electrum.XXXXXX
+  register: mktemp_output
+
+- name: Change tmp directory permissions
+  file:
+    path: "{{ mktemp_output.stdout }}"
+    state: directory
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Download electrum
+  get_url:
+    url: "{{ electrum_url }}"
+    dest: "{{ mktemp_output.stdout }}/electrum.tar.gz"
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Download electrum signature
+  get_url:
+    url: "{{ electrum_url }}.asc"
+    dest: "{{ mktemp_output.stdout }}/electrum.tar.gz.sig"
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Get GPG key
+  shell: >
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0x2bd5824b7f9470e6 ||
+    gpg --keyserver pgp.mit.edu --recv-keys 0x2bd5824b7f9470e6 ||
+    gpg --keyserver keyserver.ubuntu.com --recv-keys 0x2bd5824b7f9470e6
+
+- name: Verify downloaded archive
+  command: gpg --verify electrum.tar.gz.sig electrum.tar.gz chdir={{ mktemp_output.stdout }}
+
+- name: Install electrum archive
+  shell: pip3 install {{ mktemp_output.stdout }}/electrum.tar.gz

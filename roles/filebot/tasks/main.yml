@@ -1,0 +1,35 @@
+---
+- name: Install Packages
+  apt: name=openjdk-8-jdk state=latest
+
+- name: Create temp dir for downloading the filebot .deb
+  command: mktemp -d /tmp/filebot.XXXXXXXX
+  register: mktemp_output
+
+- name: copy filebot deb
+  copy:
+    src: files/fb_4.7.9_amd64.deb
+    dest: '{{ mktemp_output.stdout }}/fb_4.7.9_amd64.deb'
+
+# - name: Download filebot .deb
+#   get_url:
+#     url: '{{ filebot_url }}'
+#     dest: '{{mktemp_output.stdout}}/filebot.deb'
+#     checksum: "sha256:{{ filebot_sha }}"
+
+# - name: Download filebot signature
+#   get_url:
+#     url: '{{ filebot_sig }}'
+#     dest: "{{ mktemp_output.stdout }}/filebot.sig"
+
+# - name: Get GPG key
+#   shell: >
+#     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 4E402EBF7C3C6A71 ||
+#     gpg --keyserver pgp.mit.edu --recv-keys 4E402EBF7C3C6A71 ||
+#     gpg --keyserver keyserver.ubuntu.com --recv-keys 4E402EBF7C3C6A71
+
+# - name: Verify downloaded archive
+#   command: gpg --verify filebot.sig filebot.deb chdir={{ mktemp_output.stdout }}
+
+- name: Install filebot
+  apt: deb='{{mktemp_output.stdout}}/fb_4.7.9_amd64.deb'

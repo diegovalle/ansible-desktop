@@ -1,0 +1,67 @@
+- name: Add postgres repository key
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+
+- name: Add postgres repository
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main' state=present
+
+- name: Install postgresql
+  apt: pkg=postgresql-{{ postgre_version }} state=present force=yes
+
+- name: Start postgresql server
+  service: name=postgresql state=started enabled=yes
+
+
+- name: Install postgres packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - build-essential
+    - python-dev
+    - python-setuptools
+    - python-psycopg2
+    - postgresql-contrib-{{ postgre_version }}
+    - postgresql-{{ postgre_version }}-postgis-{{ postgis_version }}
+    - postgis
+    - libpq-dev
+    - postgresql-{{ postgre_version }}-pgrouting
+
+
+## CREATE  EXTENSION pgrouting;
+## SELECT * FROM pgr_version();
+
+# based on https://trac.osgeo.org/postgis/wiki/UsersWikiPostGIS15Ubuntu1110src
+
+- name: enable pg_stat_statements extension
+  become: yes
+  become_user: postgres
+  command: psql -d postgis_template -c "CREATE EXTENSION pg_stat_statements;"
+  when: createdb_template_postgis.changed
+
+- name: ensure template_postgis database exists
+  become: yes
+  become_user: postgres
+  postgresql_db: name=postgis_template state=present
+  register: createdb_template_postgis
+
+- name: make postgis_template
+  become: yes
+  become_user: postgres
+  command: psql -d postgis_template -c "UPDATE pg_database SET datistemplate=true WHERE datname='postgis_template';"
+  when: createdb_template_postgis.changed
+
+- name: enable postgis extension
+  become: yes
+  become_user: postgres
+  command: psql -d postgis_template -c "CREATE EXTENSION postgis;"
+  when: createdb_template_postgis.changed
+
+#- name: run the postgis SQL scripts
+#  become: yes
+#  become_user: postgres
+#  command: psql -d postgis_template -f {{ item }}
+#  with_items:
+#    - /usr/share/postgresql/{{ postgre_version }}/contrib/postgis-{{ postgis_version }}/postgis.sql
+#    - /usr/share/postgresql/{{ postgre_version }}/contrib/postgis-{{ postgis_version }}/spatial_ref_sys.sql
+#    - /usr/share/postgresql/{{ postgre_version }}/contrib/postgis-{{ postgis_version }}/postgis_comments.sql

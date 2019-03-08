@@ -1,0 +1,44 @@
+---
+- name: Install Packages
+  apt:
+    name: '{{r_packages}}'
+    state: latest
+
+- name: Add R repository public key
+  apt_key:
+    id: E084DAB9
+    keyserver: keyserver.ubuntu.com
+    state: present
+  tags:
+    - r-repository-public-key
+
+- name: Add R repository
+  apt_repository:
+    repo: "{{ item.type }} {{ item.url }}"
+    state: present
+    update_cache: true
+  with_items: "{{ r_repository }}"
+  tags:
+    - r-repository-add
+
+- name: Creates .Rprofile with default repo
+  lineinfile: dest=/home/{{ username }}/.Rprofile line='local({r <- getOption("repos");r["CRAN"] <- "https://cloud.r-project.org";options(repos = r)})' create=True
+
+- name: Creates .Renviron with default lib path
+  lineinfile: dest=/home/{{ username }}/.Renviron line='#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages' create=True
+
+- name: Add R packages
+  when: install_packages == true
+  command: /usr/bin/Rscript --slave --no-save --no-restore-history -e "if (! ('{{item}}' %in% installed.packages()[,'Package'])) install.packages(pkgs='{{item}}', repos='https://cloud.r-project.org');quit(save = 'no', status = !require('{{item}}'))"
+  with_items:
+    - devtools
+    - rgdal
+
+# - name: Install tidyverse
+#   when: install_packages == true
+#   command: /usr/bin/Rscript --slave --no-save --no-restore-history -e "if (! ('{{item}}' %in% installed.packages()[,'Package'])) install.packages('{{item}}', repos = 'https://cloud.r-project.org')"
+#   with_items:
+#     - tidyverse
+
+- name: Config java
+  command: R CMD javareconf -e

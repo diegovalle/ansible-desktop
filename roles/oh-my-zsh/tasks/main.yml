@@ -1,0 +1,41 @@
+  - name: Install git and zsh
+    apt:
+      name: "{{ packages }}"
+      state: latest
+      update_cache: yes
+    vars:
+      packages:
+        - git
+        - zsh
+        - git-core
+
+
+  # - name: Backing up existing ~/.zshrc
+  #   shell: if [ -f ~/.zshrc ]; then cp ~/.zshrc{,.orig}; fi
+
+  - name: Clone oh-my-zsh repo
+    become: yes
+    become_user: "{{ username }}"
+    git:
+      repo=https://github.com/robbyrussell/oh-my-zsh.git
+      dest=/home/{{user}}/.oh-my-zsh
+
+  - name: Set zsh as default shell
+    user: name={{user}} shell=/bin/zsh
+
+  - name: Create temp file for powerline fonts
+    command: mktemp -d /tmp/ansible.XXXXXXXX
+    register: mktemp_output
+
+  - name: Clone Powerline fonts
+    git:
+      repo=https://github.com/powerline/fonts
+      dest={{ mktemp_output.stdout }}/powerlinefonts
+      accept_hostkey=yes
+    register: font_cloned
+
+  - name: Install Powerline Fonts
+    shell:
+      ./install.sh
+      chdir={{mktemp_output.stdout}}/powerlinefonts
+    when: font_cloned is success

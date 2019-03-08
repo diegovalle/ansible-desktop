@@ -1,0 +1,36 @@
+- name: Create temp directory for downloading dns-crypt
+  command: mktemp -d /tmp/dns.XXXXXX
+  register: mktemp_output
+  
+- name: Download dns-crypt
+  get_url:
+    url: https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
+    dest: "{{ mktemp_output.stdout }}/dnscrypt.zip"
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g-rwx,o-rwx"
+    
+- name: Extract dnscrypt.tgz intto tempdir
+  unarchive:
+    src: "{{ mktemp_output.stdout }}/dnscrypt.zip"
+    dest: "{{ mktemp_output.stdout }}/"
+    
+- name: Example command    
+  command: dnscrypt-proxy -resolve example.com chdir="{{ mktemp_output.stdout }}/"
+
+- name: Move dnscryypt to /opt
+  command: "mv {{ mktemp_output.stdout }}/dnscrypt-proxy /opt/dnscrypt-proxy
+
+- name: Move dnscryypt.conf to /etc
+  command: "mv {{ mktemp_output.stdout }}/example-dnscrypt-proxy.toml /opt/dnscrypt-proxy.toml
+
+- lineinfile:
+    path: /etc/selinux/config
+    regexp: '^server_names = '
+    line: 'server_names = ['google', 'cloudflare']'
+
+- name: Example command    
+  command: /opt/dnscrypt-proxy -service install
+
+- name: Example command    
+  command: /opt/dnscrypt-proxy -service start

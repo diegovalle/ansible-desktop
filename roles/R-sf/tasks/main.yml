@@ -1,0 +1,15 @@
+---
+- apt_repository:
+    repo: ppa:ubuntugis/ubuntugis-unstable
+    state: present
+    update_cache: true
+
+- name: Install Packages
+  apt:
+    name: '{{r_packages}}'
+    state: latest
+
+- name: Add sf R package
+  command: /usr/bin/Rscript --slave --no-save --no-restore-history -e "if (! ('{{item}}' %in% installed.packages()[,'Package'])) install.packages(pkgs='{{item}}', repos='https://cloud.r-project.org');quit(save = 'no', status = !require('{{item}}'))"
+  with_items:
+    - sf

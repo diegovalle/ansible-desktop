@@ -1,0 +1,40 @@
+- name: Create apps directory
+  file:
+    path=/home/{{ username }}/{{ apps_dir }}
+    state=directory
+
+- name: Remove pycharm directory
+  file:
+    path=/home/{{ username }}/{{ apps_dir }}/pycharm-{{ pycharm_edition }}
+    state=absent
+
+    # - name: Create pycharm directory
+  #   file:
+  #     path=/home/{{ username }}/{{ apps_dir }}/pycharm-{{ pycharm_edition }}
+  #     state=directory
+
+- name: Create temp directory for downloading pycharm
+  command: mktemp -d /tmp/pycharm.XXXXXX
+  register: mktemp_output
+
+- name: download pycharm
+  get_url:
+    url: "http://download.jetbrains.com/python/pycharm-{{ pycharm_edition }}-{{ pycharm_version }}.tar.gz"
+    dest: "{{ mktemp_output.stdout }}/pycharm-{{ pycharm_edition }}-{{ pycharm_version }}.tar.gz"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: untar pycharm
+  shell: 'tar -xzf {{ mktemp_output.stdout }}/pycharm-{{ pycharm_edition }}-{{ pycharm_version }}.tar.gz -C /home/{{username}}/{{apps_dir}}/'
+
+- name: Move foo to bar
+  command: mv /home/{{username}}/{{apps_dir}}/pycharm-{{ pycharm_edition }}-{{ pycharm_version}} /home/{{username}}/{{ apps_dir }}/pycharm-{{ pycharm_edition }}
+
+- name: Create pycharm directory
+  file:
+    path=/home/{{ username }}/{{ apps_dir }}/pycharm-{{ pycharm_edition }}
+    state=directory
+    owner="{{username}}"
+    mode=0755
+    recurse=yes

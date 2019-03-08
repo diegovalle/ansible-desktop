@@ -1,0 +1,68 @@
+---
+- name: Ensure old versions of Docker are not installed.
+  package:
+    name:
+      - docker
+      - docker-engine
+    state: absent
+
+- name: dependencies are installed.
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+    state: present
+
+- name: add Docker apt key.
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+
+- name: add Docker repository.
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+    update_cache: true
+
+- name: Install Docker.
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+  notify: restart docker
+
+- name: download gvisor
+  get_url:
+    url: https://storage.googleapis.com/gvisor/releases/nightly/latest/runsc
+    dest: /usr/local/bin/runsc
+    checksum: 'sha512:https://storage.googleapis.com/gvisor/releases/nightly/latest/runsc.sha512'
+
+- name: create /etc/docker
+  file:
+    path: /etc/docker
+    state: directory
+
+- name: Check that the /etc/docker/daemon.json exists
+  stat:
+    path: /etc/docker/daemon.json
+  register: stat_result
+
+- name: Create /etc/docker/daemon.json, if it doesnt exist already
+  file:
+    path: /etc/docker/daemon.json
+    state: touch
+  when: stat_result.stat.exists == False
+
+- name:  add runsc as a runtime to your Docker configuration (/etc/docker/daemon.json)
+  blockinfile:
+    path: /etc/docker/daemon.json
+    block: |
+      {
+        "runtimes": {
+          "runsc": {
+            "path": "/usr/local/bin/runsc"
+           }
+        }
+      }
