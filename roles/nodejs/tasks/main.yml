@@ -26,7 +26,7 @@
     update_cache: yes
 
 - name: Install phantomjs
-  npm: name=phantomjs-prebuilt global=yes
+  command: bash -lc "npm install -g phantomjs-prebuilt --unsafe-perm"
 
 - name: Install casperjs
   npm:  name=casperjs global=yes
