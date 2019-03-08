@@ -22,7 +22,7 @@
   apt:
     pkg:
       - nodejs
-    state: installed
+    state: present
     update_cache: yes
 
 - name: Install phantomjs

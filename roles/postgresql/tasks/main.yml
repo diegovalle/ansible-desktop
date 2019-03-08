@@ -33,11 +33,11 @@
 
 # based on https://trac.osgeo.org/postgis/wiki/UsersWikiPostGIS15Ubuntu1110src
 
-- name: enable pg_stat_statements extension
-  become: yes
-  become_user: postgres
-  command: psql -d postgis_template -c "CREATE EXTENSION pg_stat_statements;"
-  when: createdb_template_postgis.changed
+# - name: enable pg_stat_statements extension
+#   become: yes
+#   become_user: postgres
+#   command: psql -d postgis_template -c "CREATE EXTENSION pg_stat_statements;"
+#   when: createdb_template_postgis.changed
 
 - name: ensure template_postgis database exists
   become: yes
