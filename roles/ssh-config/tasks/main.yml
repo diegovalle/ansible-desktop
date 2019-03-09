@@ -1,0 +1,31 @@
+---
+- name: Checking that ssh directory exists
+  stat:
+    path: "/.ssh"
+  register: ssh_config_dir
+  changed_when: false
+
+- name: Create ssh config directory if not exists
+  file:
+    path: "/.ssh"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0700"
+  when: not ssh_config_dir.stat.exists
+
+- name: Keep ssh connected
+  lineinfile:
+    dest: ".ssh/config"
+    line: '{{ item }}'
+  with_items:
+    - "ServerAliveInterval 120"
+    - "HashKnownHosts yes"
+
+- name: ssh protocol and compression
+  blockinfile:
+    path: "/.ssh/config"
+    block: |
+      Host *
+        Protocol 2
+        Compression yes
