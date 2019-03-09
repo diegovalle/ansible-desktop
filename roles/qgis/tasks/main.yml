@@ -13,12 +13,17 @@
     - git
 
 - name: Add qgis repository key
-  apt_key: url=http://qgis.org/downloads/qgis-2017.gpg.key state=present
+  apt_key: url=https://qgis.org/downloads/qgis-2017.gpg.key state=present
 
 #- name: Add repository key
 #  apt_key: id=073D307A618E5811
 #           keyserver=keyserver.ubuntu.com
 #           state=present
+
+# - apt_repository:
+#     repo: ppa:ubuntugis/ubuntugis-unstable
+#     state: present
+#     update_cache: true
 
 - name: Add repository
   apt_repository: repo="deb http://qgis.org/debian {{ansible_distribution_release}} main"
@@ -36,5 +41,3 @@
     - qgis
     - python-qgis
     - qgis-plugin-grass
-
-    

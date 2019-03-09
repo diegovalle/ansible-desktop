@@ -50,6 +50,7 @@
     #- fonts
     - nodejs
     - nvm
+    - qgis
     - R
     - R-sf
     - r-studio
@@ -57,10 +58,10 @@
     - rclone # check version and architecture
     - zopfli
     - youtube-dl
+    #- opera
     - google-chrome
     - gmvault
     - virtualbox
-    - opera
     - unattended-upgrades
     - security
     - iptables
@@ -70,7 +71,6 @@
     - go
     - electrum
     - tor-browser
-    - qgis
     - wikidpad
     - pycharm # check version
     - gephi # check version
