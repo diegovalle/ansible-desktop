@@ -40,6 +40,7 @@
     filebot_sha: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2.pkg.sha256'
     filebot_sig: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb.asc'
   roles:
+    - hosts
     - docker
     - apparmor
     - software
@@ -75,9 +76,10 @@
     - pycharm # check version
     - gephi # check version
     - filebot
-    #dnscrypt-proxy
-    #ms code
-    #atom
-    #appengine
-    #brave
-    #firejail
+    - vscode
+    # google-earth
+    # dnscrypt-proxy
+    # atom
+    # appengine
+    # brave
+    # firejail
