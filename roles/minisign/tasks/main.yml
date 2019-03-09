@@ -1,0 +1,23 @@
+- name: Install libsodium
+  apt:
+    pkg: libsodium-dev
+    state: installed
+
+- name: Create temp directory for downloading minisign
+  command: mktemp -d /tmp/minisign.XXXXXX
+  register: mktemp_output
+
+- name: check installed
+  command: /usr/local/bin/minisign
+  register: result
+  ignore_errors: True
+  changed_when: False
+
+- name: Clone minisign repo
+  git: repo=https://github.com/jedisct1/minisign dest={{ mktemp_output.stdout }} force=yes
+  when: result.rc != 0
+
+- name: make minisign
+  shell: mkdir build && cd build && cmake .. && make && make install  chdir={{ mktemp_output.stdout }}
+  args:
+    warn: false

@@ -1,22 +1,21 @@
 - apt: name={{item}} state=latest
-    with_items:
-     - ssh
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
+  with_items:
+    - ssh
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
 
 - name: SSH config
-    lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
-    with_items:
-      - { regexp: '^PasswordAuthentication.*', line: 'PasswordAuthentication no', file: '/etc/ssh/sshd_config'  }
-      - { regexp: '^PermitRootLogin.*', line: 'PermitRootLogin without-password', file: '/etc/ssh/sshd_config' }
-      - { regexp: '^UseDNS.*', line: 'UseDNS no', file: '/etc/ssh/sshd_config' }
-      - { regexp: '^Ciphers', line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com', file: '/etc/ssh/sshd_config' } 
-      - { regexp: '^MACs', line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256', file: '/etc/ssh/sshd_config' }
-      - { regexp: '^KexAlgorithms', line: 'KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1', file: '/etc/ssh/sshd_config' }
-  notify: Restart ssh 
-    
+  lineinfile: dest="{{ item.file }}" regexp="{{ item.regexp }}" line="{{ item.line }}" state=present
+  with_items:
+    - { regexp: '^PasswordAuthentication.*', line: 'PasswordAuthentication no', file: '/etc/ssh/sshd_config'  }
+    - { regexp: '^PermitRootLogin.*', line: 'PermitRootLogin without-password', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^UseDNS.*', line: 'UseDNS no', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^Ciphers', line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^MACs', line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256', file: '/etc/ssh/sshd_config' }
+    - { regexp: '^KexAlgorithms', line: 'KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1', file: '/etc/ssh/sshd_config' }
+  notify: Restart ssh
+
 - name: Disable MOTD on login and SSHD
   replace: dest="{{ item.file }}" regexp="{{ item.regexp }}" replace="{{ item.line }}"
-  with_items:      
+  with_items:
     - { regexp: '^session.*optional.*pam_motd.so.*', line: '# MOTD DISABLED', file: '/etc/pam.d/login' }
     - { regexp: '^session.*optional.*pam_motd.so.*', line: '# MOTD DISABLED', file: '/etc/pam.d/sshd' }
-

@@ -7,9 +7,7 @@
   - name: install python 2
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-setuptools)
   - name: updates a server
-    apt: allow_unauthenticated=yes update_cache=yes autoremove=yes autoclean=yes
-#  - name: upgrade a server
-#    apt: upgrade=dist
+    apt: update_cache=yes autoremove=yes autoclean=yes
 
 - hosts: all
   vars:
@@ -36,9 +34,6 @@
     go_tarball_checksum: "sha256:ff54aafedff961eb94792487e827515da683d61a5f9482f668008832631e5d25"
     electrum_url: https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz
     rstudio_url: https://download1.rstudio.org/rstudio-xenial-1.1.463-amd64.deb
-    filebot_url: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb'
-    filebot_sha: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2.pkg.sha256'
-    filebot_sig: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb.asc'
   roles:
     - hosts
     - docker
@@ -76,6 +71,7 @@
     - vscode
     - atom
     - brave
+    - minisign
     #- fonts
     # google-earth
     # dnscrypt-proxy
