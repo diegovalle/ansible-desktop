@@ -48,7 +48,6 @@
     - keepassxc
     - flexget
     - powerline-fonts
-    #- fonts
     - nodejs
     - nvm
     - qgis
@@ -59,7 +58,6 @@
     - rclone # check version and architecture
     - zopfli
     - youtube-dl
-    #- opera
     - google-chrome
     - gmvault
     - virtualbox
@@ -68,7 +66,6 @@
     - iptables
     - postgresql
     - borg
-    #- plex
     - go
     - electrum
     - tor-browser
@@ -79,7 +76,10 @@
     - vscode
     - atom
     - brave
+    #- fonts
     # google-earth
     # dnscrypt-proxy
     # appengine
     # firejail
+    #- plex
+    #- opera
