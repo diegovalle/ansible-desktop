@@ -1,0 +1,25 @@
+- name: Install apt-transport-https packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - apt-transport-https
+
+- name: Add brave repository key
+  apt_key: url=https://brave-browser-apt-release.s3.brave.com/brave-core.asc state=present
+
+- name: Add brave repository
+  apt_repository:
+    repo: deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ {{ansible_distribution_release}} main
+    state: present
+    filename: brave-browser-release
+
+- name: Install brave package
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - brave-browser
+    - brave-keyring

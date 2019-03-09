@@ -77,9 +77,9 @@
     - gephi # check version
     - filebot
     - vscode
+    - atom
+    - brave
     # google-earth
     # dnscrypt-proxy
-    # atom
     # appengine
-    # brave
     # firejail

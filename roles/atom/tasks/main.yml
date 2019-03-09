@@ -1,10 +1,21 @@
 ---
-- name: Create temp file for downloading the atom .deb
-  command: mktemp -d /tmp/ansible.XXXXXXXX
-  register: mktemp_output
+- name: install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
 
-- name: Download Atom
-  get_url: url='https://atom.io/download/deb' dest='{{mktemp_output.stdout}}/atom-amd64.deb'
+- name: install brave browser apt key
+  apt_key:
+    url: 'https://packagecloud.io/AtomEditor/atom/gpgkey'
+    state: present
 
-- name: Install Atom
-  apt: deb='{{mktemp_output.stdout}}/atom-amd64.deb'
+- name: install atom repo
+  apt_repository:
+    repo: deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main
+    filename: atom
+    state: present
+
+- name: install atom apt package
+  apt:
+    name: atom
+    state: present
