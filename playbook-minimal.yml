@@ -1,0 +1,91 @@
+---
+- hosts: all
+  gather_facts: False
+
+
+  tasks:
+  - name: install python 2
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-setuptools)
+  - name: updates a server
+    apt: update_cache=yes autoremove=yes autoclean=yes
+  - name: Install Packages
+    apt:
+      pkg:
+        - curl
+        - man-db
+        - unzip
+        - zip
+        - hopenpgp-tools
+        - sudo
+        - locales
+        - emacs
+        - htop
+        - wget
+        - curl
+        - gnupg
+        - ispell
+        - jpegoptim
+        - optipng
+        - sqlite3
+        - python-dev
+        - python3-dev
+        - python-qt4
+        - python-sphinx
+        - filezilla
+        - virtualenvwrapper
+        - libffi-dev
+        - gcc
+        - virtualbox
+        - ca-certificates
+        - libavcodec-extra
+        - typecatcher
+        - gdebi
+        - libssl-dev
+        - shellcheck
+        - sqlitebrowser
+        - libv8-3.14-dev
+        - poedit
+        - aspell-es
+        - myspell-es
+        - traceroute
+        - xclip
+        - libudunits2-dev
+        - libfreetype6-dev
+        - colordiff
+        - siege
+        - lynx
+        - libcairo2-dev
+        - libpoppler-cpp-dev
+        - libmagick++-dev
+        - python3-libtorrent
+      state: present
+  - apt:
+      pkg:
+        - firejail
+      state: latest
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
+
+- hosts: all
+  vars:
+    username: diego
+    nvm_version: v0.34.0
+    nodejs_version: "10.x"
+    rclone_arch: amd64 # 386 # amd64
+    rstudio_arch: amd64 # i386
+    rstudio_url: https://download1.rstudio.org/rstudio-xenial-1.1.463-amd64.deb
+    pycharm_version: 2018.3.4
+  roles:
+    - powerline-fonts
+    - nodejs
+    - nvm
+    - qgis
+    - R
+    - R-sf
+    - r-studio
+    - oh-my-zsh
+    - google-chrome
+    - pycharm # check version
+    - ssh-config
+    - vscode
+    - atom
+    - brave
