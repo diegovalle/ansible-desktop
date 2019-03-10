@@ -4,7 +4,7 @@
     name: apt-transport-https
     state: present
 
-- name: install brave browser apt key
+- name: install atom  apt key
   apt_key:
     url: 'https://packagecloud.io/AtomEditor/atom/gpgkey'
     state: present

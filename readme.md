@@ -1,5 +1,8 @@
-Playbook for installing laptop software
+Playbook for setting up my work environment
 ====================================
 
+Set hostname to whatever you want and run
 
-ansible-playbook -i "localhost," -c local playbook.yml --ask-sudo-pass --sudo
+``` bash
+ansible-playbook -i "localhost," -c local playbook.yml --ask-sudo-pass --sudo --extra-vars "hostname=laptop"
+```

@@ -77,7 +77,7 @@ jobs:
     - run: |-
         ansible-playbook -i tests/inventory playbook.yml --syntax-check
         ansible-playbook -i tests/inventory playbook-minimal.yml --syntax-check
-        ansible-playbook -i tests/inventory playbook.yml --connection=local --become --extra-vars "testing=true"
+        ansible-playbook -i tests/inventory playbook.yml --connection=local --become --extra-vars "testing=true hostname=laptop"
     # Teardown
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
     # Save test results

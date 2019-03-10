@@ -75,13 +75,13 @@
     rstudio_url: https://download1.rstudio.org/rstudio-xenial-1.1.463-amd64.deb
     pycharm_version: 2018.3.4
   roles:
-    - powerline-fonts
     - nodejs
     - nvm
     - qgis
     - R
     - R-sf
     - r-studio
+    - powerline-fonts
     - oh-my-zsh
     - google-chrome
     - pycharm # check version

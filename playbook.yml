@@ -42,13 +42,13 @@
     - spanish
     - keepassxc
     - flexget
-    - powerline-fonts
     - nodejs
     - nvm
     - qgis
     - R
     - R-sf
     - r-studio
+    - powerline-fonts
     - oh-my-zsh
     - rclone # check version and architecture
     - zopfli
@@ -72,6 +72,7 @@
     - atom
     - brave
     - minisign
+    - onionshare
     #- fonts
     # google-earth
     # dnscrypt-proxy
