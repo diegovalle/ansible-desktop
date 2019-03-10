@@ -1,0 +1,10 @@
+---
+- name: install onionshare repo
+  apt_repository:
+    repo: ppa:micahflee/ppa
+    update_cache: yes
+
+- name: install onionshare pkg
+  apt:
+    name: onionshare
+    state: present
