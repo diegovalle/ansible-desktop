@@ -1,0 +1,10 @@
+---
+- name: install onionshare repo
+  apt_repository:
+    repo: ppa:kelleyk/emacs
+    update_cache: yes
+
+- name: install onionshare pkg
+  apt:
+    name: emacs{{ emacs_version }}
+    state: present

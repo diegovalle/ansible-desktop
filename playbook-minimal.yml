@@ -18,7 +18,6 @@
         - hopenpgp-tools
         - sudo
         - locales
-        - emacs
         - htop
         - wget
         - curl
@@ -81,11 +80,11 @@
     - R
     - R-sf
     - r-studio
-    - powerline-fonts
     - oh-my-zsh
     - google-chrome
     - pycharm # check version
     - ssh-config
+    - emacs
     - vscode
     - atom
     - brave

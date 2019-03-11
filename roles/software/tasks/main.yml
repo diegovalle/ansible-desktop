@@ -8,7 +8,6 @@
       - hopenpgp-tools
       - sudo
       - locales
-      - emacs
       - htop
       - wget
       - curl
