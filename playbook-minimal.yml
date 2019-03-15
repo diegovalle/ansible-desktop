@@ -15,6 +15,7 @@
         - man-db
         - unzip
         - zip
+        - nano
         - hopenpgp-tools
         - sudo
         - locales
