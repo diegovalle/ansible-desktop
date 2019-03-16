@@ -39,7 +39,6 @@ profile youtube_dl /usr{,/local}/bin/youtube-dl {
 	owner @{PROC}/@{pid}/fd/ r,
 	
 	# Temporal files and sockets
-	owner @{HOME}/[a-zA-Z0-9]* r,
 	owner @{HOME}/firejail/torrents/videos/** rw,
 	owner @{HOME}/Downloads/** rw,
 	owner /{,var/}tmp/[a-zA-Z0-9]* rw,

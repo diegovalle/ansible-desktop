@@ -1,0 +1,112 @@
+# vim:syntax=apparmor
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2017-2018 Mikhail Morfikov
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+/usr/bin/smplayer {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/fonts>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/audio>
+  #include <abstractions/drm>
+  #include <abstractions/wayland>
+  #include <abstractions/apache2-common>
+
+  # Needed for hardware decoding
+  ##include <abstractions/nvidia>
+
+  # Needed for support for video sites (in the Network options)
+  #include <abstractions/openssl>
+
+  signal (send) set=(kill) peer=/usr/bin/mpv,
+
+  
+  /dev/shm/ r,
+  /etc/fonts/** r,
+  /usr/share/fonts/** r,
+  /etc/ld.so.preload r,
+  /etc/machine-id r,
+  /etc/mplayer/mplayer.conf r,
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+  /etc/vdpau_wrapper.cfg r,
+  /etc/xdg/Trolltech.conf rk,
+  /usr/bin/mplayer rix,
+  /usr/bin/pacmd rix,
+  /usr/bin/smplayer mr,
+  /usr/bin/pulseaudio rix,
+  /run/dbus/system_bus_socket r,
+
+  # Which media files SMPlayer should be able to open
+  #      / r,
+  #      /home/ r,
+  #owner @{HOME}/ r,
+  #owner @{HOME}/**/ r,
+        /media/ r,
+  owner /media/**/ r,
+  #owner /{home,media}/**.@{AUDIO_EXT} rw,
+  #owner /{home,media}/**.@{VIDEO_EXT} rw,
+  #owner /{home,media}/**.@{TEXT_EXT} rw,
+  #owner /{home,media}/**.@{OTHER_MEDIA_EXT} rw,
+
+  # SMPlayer config files
+  owner @{HOME}/.config/smplayer/ rw,
+  owner @{HOME}/.config/smplayer/* rw,
+  owner @{HOME}/.config/smplayer/hdpi.ini.* rw,
+   link @{HOME}/.config/smplayer/hdpi.ini.* -> /home/*/.config/smplayer/#[0-9]*,
+  owner @{HOME}/.config/smplayer/hdpi.ini.lock rwk,
+  owner @{HOME}/.config/smplayer/smplayer.ini.* rw,
+   link @{HOME}/.config/smplayer/smplayer.ini.* -> /home/*/.config/smplayer/#[0-9]*,
+  owner @{HOME}/.config/smplayer/smplayer.ini.lock rwk,
+  owner @{HOME}/.config/smplayer/playlist.ini.* rw,
+   link @{HOME}/.config/smplayer/playlist.ini.* -> /home/*/.config/smplayer/#[0-9]*,
+  owner @{HOME}/.config/smplayer/playlist.ini.lock rwk,
+
+  owner /home/diego/.config/pulse/client.conf rwk,
+
+  owner @{HOME}/.cache/#[0-9]* rw,
+
+  # This ID uniquely identifies the host. It should be considered "confidential", and must not be
+  # exposed in untrusted environments, in particular on the network.
+  deny /var/lib/dbus/machine-id r,
+  deny /etc/machine-id r,
+
+  deny owner @{PROC}/@{pid}/stat r,
+  deny owner @{PROC}/@{pid}/cmdline r,
+
+  deny /dev/ r,
+  deny /dev/tty r,
+
+  # Nameservice
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+
+  # TMP
+  owner /tmp/qtsingleapp-smplay-* rw,
+  owner /tmp/qtsingleapp-smplay-*-lockfile rwk,
+  # Media downloaded by firefox
+  #deny owner /tmp/mozilla_*/* r,
+
+  # External apps
+  /usr/bin/mpv rPUx,
+  /usr/bin/smtube rPUx,
+  /usr/bin/youtube-dl rPUx,
+
+  owner @{HOME}/ r, 
+  owner @{HOME}/firejail/torrents/videos/** rw,
+  owner @{HOME}/Downloads/** rw,
+
+  # PulseAudio (to use "pacmd")
+
+}

@@ -10,7 +10,7 @@
     update_cache: yes
 
 
-- name: example copying file with owner and permissions
+- name: copy abstractions
   copy:
     src: files/abstractions
     dest: /etc/apparmor.d/
@@ -18,7 +18,7 @@
     group: root
     mode: 0644
 
-- name: example copying file with owner and permissions
+- name: copy tunables
   copy:
     src: files/tunables
     dest: /etc/apparmor.d/
@@ -26,7 +26,7 @@
     group: root
     mode: 0644
 
-- name: example copying file with owner and permissions
+- name: ricochet apparmor profile
   copy:
     src: files/usr.bin.ricochet
     dest: /etc/apparmor.d/usr.bin.ricochet
@@ -34,7 +34,7 @@
     group: root
     mode: 0644
 
-- name: example copying file with owner and permissions
+- name: youtube-dl apparmor profile
   copy:
     src: files/usr.bin.youtube-dl
     dest: /etc/apparmor.d/usr.bin.youtube-dl
@@ -42,10 +42,22 @@
     group: root
     mode: 0644
 
-- name: Enforce profile
+- name: smplayer apparmor profile
+  copy:
+    src: files/usr.bin.smplayer
+    dest: /etc/apparmor.d/usr.bin.smplayer
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enforce profile for youtube-dl
   when: testing != 'true'
   command: aa-enforce /etc/apparmor.d/usr.bin.youtube-dl
 
-- name: Enforce profile
+- name: Enforce profile for ricochet
   when: testing != 'true'
   command: aa-enforce /usr/bin/ricochet
+
+- name: Enforce profile for smplayer
+  when: testing != 'true'
+  command: aa-enforce /etc/apparmor.d/usr.bin.smplayer
