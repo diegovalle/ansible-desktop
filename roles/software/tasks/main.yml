@@ -73,6 +73,7 @@
       - libpoppler-cpp-dev
       - libmagick++-dev
       - python3-libtorrent
+      - ledger
     state: present
 
 - apt:

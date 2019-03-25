@@ -1,0 +1,25 @@
+- name: Install apt-transport-https packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - apt-transport-https
+    
+- name: Install incron package
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - incron
+    
+- name: make sure {{ username }} has permission to use incron
+  lineinfile: dest=/etc/incron.allow line="{{ username }}" state=present
+  
+- name: Ensure Incron is running and enabled as configured.
+  service:
+    name: "incron"
+    state: started
+    enabled: yes
+
