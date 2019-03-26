@@ -1,0 +1,9 @@
+---
+- name: start iptables-persistent
+  service: name=netfilter-persistent state=started
+
+- name: restart iptables-persistent
+  service: name=netfilter-persistent state=restarted
+
+- name: restart tor
+  service: name=tor state=restarted

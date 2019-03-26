@@ -39,6 +39,8 @@
     - hosts
     - incron
     - docker
+    - iptables
+    - tor-browser
     - apparmor
     - software
     - spanish
@@ -60,12 +62,10 @@
     - virtualbox
     - unattended-upgrades
     - security
-    - iptables
     - postgresql
     - borg
     - go
     - electrum
-    - tor-browser
     - wikidpad
     - pycharm # check version
     - gephi # check version
