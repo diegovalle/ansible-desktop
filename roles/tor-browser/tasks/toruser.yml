@@ -18,60 +18,60 @@
 
 - name: Only tor
   lineinfile:
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: 0644
-    dest: /etc/iptables/rules.v4 
+    dest: /etc/iptables/rules.v4
     line: "iptables -t nat -A OUTPUT -m owner --uid-owner 1634 -p tcp -j REDIRECT --to-ports 9040"
     insertbefore: '^COMMIT'
     state: present
 
 - name: Only tor
   lineinfile:
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: 644
-    dest: /etc/iptables/rules.v4 
+    dest: /etc/iptables/rules.v4
     line: "iptables -t nat -A OUTPUT -m owner --uid-owner 1634 -p tcp -j REDIRECT --to-ports 9040"
     insertbefore: '^COMMIT'
     state: present
-    
+
 - name: Only tor
   lineinfile:
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: 0644
-    dest: /etc/iptables/rules.v4 
+    dest: /etc/iptables/rules.v4
     line: "iptables -t nat -A OUTPUT -m owner --uid-owner 1634 -p udp --dport 53 -j REDIRECT --to-ports 5300"
     insertbefore: '^COMMIT'
     state: present
-    
+
 - name: Only tor
   lineinfile:
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: 0644
-    dest: /etc/iptables/rules.v4 
+    dest: /etc/iptables/rules.v4
     line: "iptables        -A OUTPUT -m owner --uid-owner 1634 -p udp -d 127.0.0.1 --dport 5300 -j ACCEPT"
     insertbefore: '^COMMIT'
     state: present
-    
+
 - name: Only tor
   lineinfile:
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: 0644
-    dest: /etc/iptables/rules.v4 
+    dest: /etc/iptables/rules.v4
     line: "iptables        -A OUTPUT -m owner --uid-owner 1634 -j REJECT"
     insertbefore: '^COMMIT'
     state: present
-    
+
 - name: Only tor
   lineinfile:
-    owner: root 
-    group: root 
+    owner: root
+    group: root
     mode: 0644
-    dest: /etc/iptables/rules.v4 
+    dest: /etc/iptables/rules.v4
     line: "COMMIT"
     state: present
 
@@ -87,20 +87,14 @@
 
 - name: configure tor to resolve onion hostnames
   blockinfile:
-    path: /etc/iptables/rules.v4 
-    owner: root 
-    group: root 
+    path: /etc/iptables/rules.v4
+    owner: root
+    group: root
     mode: 0644
     block: |
       TransPort 9040
       DNSPort 5300
       AutomapHostsOnResolve 1
-      
-- name: template torrc
-  template: src=torrc dest=/etc/tor/torrc
-    owner=root group=root mode=0644
-  notify:
-  - restart tor
-  
+
 - name: ensure tor is running
   service: name=tor state=running
