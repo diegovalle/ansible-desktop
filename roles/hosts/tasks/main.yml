@@ -2,7 +2,7 @@
 #"generate /etc/hosts.ansible file"
 - name: Assemble host file from fragments
   assemble:
-    src: files
+    src: "./files"
     dest: /etc/hosts.ansible
     delimiter: "# ==========================================================="
 
