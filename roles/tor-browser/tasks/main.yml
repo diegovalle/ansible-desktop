@@ -14,7 +14,7 @@
       state=absent
 
   - name: Lookup which is the latest tor-browser version
-    shell: curl -s https://www.torproject.org/projects/torbrowser.html.en | grep -oP -m 1 '/dist/torbrowser/[\d\.]+/tor-browser-linux64-[\d\.]+_en-US.tar.xz' warn=False
+    shell: curl -s https://www.torproject.org/download/ | grep -oP -m 1 '/dist/torbrowser/[\d\.]+/tor-browser-linux64-[\d\.]+_en-US.tar.xz' warn=False
     register: torbrowser_ver
 
   - name: Create temp dir for downloading torbrowser
@@ -25,7 +25,7 @@
     get_url: url='https://www.torproject.org{{ torbrowser_ver.stdout}}' dest='{{mktemp_output.stdout}}/torbrowser.tar.xz'
 
   - name: Install torbrowser
-    shell: tar xf {{mktemp_output.stdout}}/torbrowser.tar.xz -C /home/{{username}}/firejail/ warn=False 
+    shell: tar xf {{mktemp_output.stdout}}/torbrowser.tar.xz -C /home/{{username}}/firejail/ warn=False
 
   - name: Change directory permissions
     file:
@@ -50,6 +50,6 @@
       owner="{{username}}"
       mode=0755
       state=file
-  
+
   - name: Add a user that can only connect to the internet through tor
     include: toruser.yml
