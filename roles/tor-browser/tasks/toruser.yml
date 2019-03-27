@@ -97,4 +97,4 @@
       AutomapHostsOnResolve 1
 
 - name: ensure tor is running
-  service: name=tor state=running
+  service: name=tor state=started
