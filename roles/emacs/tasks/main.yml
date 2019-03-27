@@ -6,5 +6,5 @@
 
 - name: install onionshare pkg
   apt:
-    name: emacs{{ emacs_version }}
+    name: "{{ emacs_version }}"
     state: present
