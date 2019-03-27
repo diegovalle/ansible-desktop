@@ -1,9 +1,10 @@
 ---
 #"generate /etc/hosts.ansible file"
-- assemble:
+- name: Assemble host file from fragments
+  assemble:
     src: files
     dest: /etc/hosts.ansible
-    deliminiter: "# ==========================================================="
+    delimiter: "# ==========================================================="
 
 - name: "check if original hosts file has a backup"
   stat: "path=/etc/hosts.backup"
