@@ -3,6 +3,16 @@
     pkg: libsodium-dev
     state: installed
 
+- name: Install  build-essential
+  apt:
+    pkg:  build-essential
+    state: installed
+
+- name: Install cmake
+  apt:
+    pkg: cmake
+    state: installed
+
 - name: Create temp directory for downloading minisign
   command: mktemp -d /tmp/minisign.XXXXXX
   register: mktemp_output
