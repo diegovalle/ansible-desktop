@@ -2,7 +2,8 @@
 #"generate /etc/hosts.ansible file"
 - name: Assemble host file from fragments
   assemble:
-    src: "./files"
+    src: "{{ playbook_dir }}/roles/hosts/files"
+    remote_src: False
     dest: /etc/hosts.ansible
     delimiter: "# ==========================================================="
 
