@@ -20,8 +20,9 @@
 
 # make sure the header looks nice
 # and you cant run this in docker
-- blockinfile:
-    when: testing != 'true'
+- name: Add header to /etc/hosts
+  when: testing != 'true'
+  blockinfile:
     path: /etc/hosts
     insertbefore: BOF
     content: |
