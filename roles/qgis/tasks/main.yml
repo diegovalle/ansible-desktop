@@ -26,10 +26,10 @@
 #     update_cache: true
 
 - name: Add repository
-  apt_repository: repo="deb http://qgis.org/debian {{ansible_distribution_release}} main" state=present
+  apt_repository: repo="deb https://qgis.org/ubuntugis {{ansible_distribution_release}} main" state=present
 
 - name: Add repository
-  apt_repository: repo="deb-src http://qgis.org/debian {{ansible_distribution_release}} main" state=present
+  apt_repository: repo="deb-src https://qgis.org/ubuntugis {{ansible_distribution_release}} main" state=present
 
 - name: Install qgis packages
   apt:
