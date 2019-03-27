@@ -19,7 +19,9 @@
   command: "cp /etc/hosts.ansible /etc/hosts"
 
 # make sure the header looks nice
+# and you cant run this in docker
 - blockinfile:
+    when: testing != 'true'
     path: /etc/hosts
     insertbefore: BOF
     content: |
