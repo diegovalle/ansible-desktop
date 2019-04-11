@@ -7,7 +7,7 @@
 
 - name: Add the user 'anon'
   user:
-    name: anon
+    name: tor
     groups: audio
     shell: /bin/bash
     append: yes
@@ -87,7 +87,7 @@
 
 - name: configure tor to resolve onion hostnames
   blockinfile:
-    path: /etc/iptables/rules.v4
+    path: /etc/tor/torrc
     owner: root
     group: root
     mode: 0644
