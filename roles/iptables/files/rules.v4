@@ -4,13 +4,12 @@
 :OUTPUT ACCEPT [0:0]
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
 
 #######################################################
 ####### Ports that sometimes need to be modified ######
 #######################################################
 # ssh
-#-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
 # HTTP and HTTPS
 #-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 #-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
@@ -23,7 +22,7 @@
 #-A INPUT -p tcp -m tcp --dport 49200 -j ACCEPT
 
 #Plex Media Server
--A INPUT -p tcp -m tcp --dport 32400 -j ACCEPT
+#-A INPUT -p tcp -m tcp --dport 32400 -j ACCEPT
 
 # aMule and Bittorent
 # -A INPUT -p tcp -m tcp --dport 6882:6889 -j ACCEPT

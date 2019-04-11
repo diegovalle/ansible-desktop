@@ -1,4 +1,16 @@
 ---
+
+- name: Ensure group "radmin" exists
+  group:
+    name: radmin
+    state: present
+    
+- name: adding existing user '{{ username }}' to group sudo
+  user:
+    name: '{{ username }}'
+    groups: sudo
+    append: yes
+
 - name: Install Packages
   apt:
     name: '{{r_packages}}'
@@ -26,6 +38,10 @@
 
 - name: Creates .Renviron with default lib path
   lineinfile: dest=/home/{{ username }}/.Renviron line='#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages' create=True
+
+
+- name: Ensure /usr/local/lib/R/site-library/ is writable by radmin
+  file: dest=/usr/local/lib/R/site-library/ owner=root group=r-admin mode=u=rwX,g=rwX,o=rX recurse=yes
 
 - name: Add R packages
   when: install_packages == true
