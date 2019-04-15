@@ -5,20 +5,15 @@
     name: radmin
     state: present
     
-- name: adding existing user '{{ username }}' to group sudo
+- name: adding existing user "{{ username }}" to group radmin
   user:
-    name: '{{ username }}'
-    groups: sudo
+    name: "{{ username }}"
+    groups: radmin
     append: yes
-
-- name: Install Packages
-  apt:
-    name: '{{r_packages}}'
-    state: latest
 
 - name: Add R repository public key
   apt_key:
-    id: E084DAB9
+    id: E298A3A825C0D65DFD57CBB651716619E084DAB9
     keyserver: keyserver.ubuntu.com
     state: present
   tags:
@@ -33,15 +28,19 @@
   tags:
     - r-repository-add
 
+- name: Install Packages
+  apt:
+    name: '{{r_packages}}'
+    state: latest
+
 - name: Creates .Rprofile with default repo
   lineinfile: dest=/home/{{ username }}/.Rprofile line='local({r <- getOption("repos");r["CRAN"] <- "https://cloud.r-project.org";options(repos = r)})' create=True
 
 - name: Creates .Renviron with default lib path
   lineinfile: dest=/home/{{ username }}/.Renviron line='#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages' create=True
 
-
 - name: Ensure /usr/local/lib/R/site-library/ is writable by radmin
-  file: dest=/usr/local/lib/R/site-library/ owner=root group=r-admin mode=u=rwX,g=rwX,o=rX recurse=yes
+  file: dest=/usr/local/lib/R/site-library/ owner=root group=radmin mode=u=rwX,g=rwX,o=rX recurse=yes
 
 - name: Add R packages
   when: install_packages == true
