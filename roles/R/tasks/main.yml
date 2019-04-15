@@ -56,4 +56,4 @@
 #     - tidyverse
 
 - name: Config java
-  command: R CMD javareconf -e
+  command: R CMD javareconf
