@@ -1,7 +1,7 @@
 ---
 r_repository:
   - type: deb
-    url: "https://cloud.r-project.org/bin/linux/ubuntu  {{ ansible_distribution_release }}/"
+    url: "https://cloud.r-project.org/bin/linux/ubuntu  {{ ansible_distribution_release }}-cran35/"
 r_packages: ['r-base', 'r-base-dev', 'r-recommended',
              'r-cran-rjava', 'curl',
              'libxml2-dev',
