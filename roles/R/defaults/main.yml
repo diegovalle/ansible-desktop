@@ -6,7 +6,7 @@ r_packages: ['r-base', 'r-base-dev', 'r-recommended',
              'r-cran-rjava', 'curl',
              'libxml2-dev',
              'r-cran-xml',
-             'libgdal-dev', 'libproj-dev']
+             'libgdal-dev', 'libproj-dev', 'libssl-dev']
 deploy_user_name: diego
 username: diego
 install_packages: true
