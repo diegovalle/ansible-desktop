@@ -10,6 +10,24 @@
     owner: root
     group: root
     mode: 0755
+    
+    
+- name: Download borg signature
+  get_url:
+    url: https://github.com/borgbackup/borg/releases/download/{{ borg_version }}/borg-linux{{ ansible_userspace_bits }}.asc
+    dest: "{{ mktemp_output.stdout }}/borg.asc"
+    owner: "{{ username }}"
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Get GPG key
+  shell: >
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 9F88FB52FAF7B393 ||
+    gpg --keyserver pgp.mit.edu --recv-keys 9F88FB52FAF7B393 ||
+    gpg --keyserver keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
+
+- name: Verify downloaded archive
+  command: gpg --verify borg.asc chdir={{ mktemp_output.stdout }}
 
 - name: Move borg to /usr/local/bin/
   copy:
