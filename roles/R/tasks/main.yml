@@ -55,5 +55,5 @@
 #   with_items:
 #     - tidyverse
 
-- name: Config java
-  command: R CMD javareconf
+#- name: Config java
+#  command: R CMD javareconf
