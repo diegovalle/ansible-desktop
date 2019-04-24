@@ -37,10 +37,10 @@
     emacs_version: emacs26
   roles:
     - hosts
-    - incron
-    - docker
     - iptables
     - tor-browser
+    - incron
+    - docker
     - apparmor
     - software
     - spanish
