@@ -1,7 +1,7 @@
-#*nat
-#-A OUTPUT -p tcp -m owner --uid-owner 1634 -j REDIRECT --to-ports 9040
-#-A OUTPUT -p udp -m owner --uid-owner 1634 -m udp --dport 53 -j REDIRECT --to-ports 5300
-#COMMIT
+*nat
+-A OUTPUT -p tcp -m owner --uid-owner 1634 -j REDIRECT --to-ports 9040
+-A OUTPUT -p udp -m owner --uid-owner 1634 -m udp --dport 53 -j REDIRECT --to-ports 5300
+COMMIT
 
 *filter
 :INPUT ACCEPT [0:0]
@@ -35,9 +35,9 @@
 # -A INPUT -p udp --dport 4665 -j ACCEPT
 # -A INPUT -p udp --dport 4672 -j ACCEPT
 
-#-A OUTPUT -d 127.0.0.1/32 -p tcp -m owner --uid-owner 1634 -m tcp --dport 9040 -j ACCEPT
-#-A OUTPUT -d 127.0.0.1/32 -p udp -m owner --uid-owner 1634 -m udp --dport 5300 -j ACCEPT
-#-A OUTPUT -m owner --uid-owner 1634 -j REJECT --reject-with icmp-port-unreachable
+-A OUTPUT -d 127.0.0.1/32 -p tcp -m owner --uid-owner 1634 -m tcp --dport 9040 -j ACCEPT
+-A OUTPUT -d 127.0.0.1/32 -p udp -m owner --uid-owner 1634 -m udp --dport 5300 -j ACCEPT
+-A OUTPUT -m owner --uid-owner 1634 -j REJECT --reject-with icmp-port-unreachable
 
 -A INPUT -j DROP
 COMMIT

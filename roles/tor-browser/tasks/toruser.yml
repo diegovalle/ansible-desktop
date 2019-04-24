@@ -16,23 +16,15 @@
 
 # Iptables
 
-- name: Only tor
-  shell: iptables -t nat -A OUTPUT -m owner --uid-owner 1634 -p tcp -j REDIRECT --to-ports 9040
+- name: set firewall rules v4
+  copy: src={{ iptables_file_v4 }} dest=/etc/iptables/rules.v4 owner=root group=root mode=644
+  notify:
+    - restart iptables-persistent
 
-- name: Only tor
-  shell: iptables -t nat -A OUTPUT -m owner --uid-owner 1634 -p tcp -j REDIRECT --to-ports 9040
-
-- name: Only tor
-  shell: iptables -t nat -A OUTPUT -m owner --uid-owner 1634 -p udp --dport 53 -j REDIRECT --to-ports 5300
-
-- name: Only tor
-  shell: iptables        -A OUTPUT -m owner --uid-owner 1634 -p udp -d 127.0.0.1 --dport 5300 -j ACCEPT
-  
-- name: Only tor
-  shell: iptables        -A OUTPUT -m owner --uid-owner 1634 -j REJECT
-
-- name: save rules
-  shell: netfilter-persistent save
+- name: set firewall rules v6
+  copy: src={{ iptables_file_v6 }} dest=/etc/iptables/rules.v6 owner=root group=root mode=644
+  notify:
+    - restart iptables-persistent
 
 - name: ensure iptables-persistent restarted
   service: name=netfilter-persistent state=restarted

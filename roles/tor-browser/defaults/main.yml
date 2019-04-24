@@ -2,3 +2,5 @@
 torbrowser_arch: 64
 username: diego
 apps_dir: apps
+iptables_file_v4: rules.v4
+iptables_file_v6: rules.v6
