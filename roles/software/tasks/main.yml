@@ -74,6 +74,7 @@
       - libmagick++-dev
       - python3-libtorrent
       - ledger
+      - sox
     state: present
 
 - apt:
