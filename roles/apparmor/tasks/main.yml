@@ -26,13 +26,13 @@
     group: root
     mode: 0644
 
-- name: ricochet apparmor profile
-  copy:
-    src: files/usr.bin.ricochet
-    dest: /etc/apparmor.d/usr.bin.ricochet
-    owner: root
-    group: root
-    mode: 0644
+# - name: ricochet apparmor profile
+#   copy:
+#     src: files/usr.bin.ricochet
+#     dest: /etc/apparmor.d/usr.bin.ricochet
+#     owner: root
+#     group: root
+#     mode: 0644
 
 - name: youtube-dl apparmor profile
   copy:
@@ -54,9 +54,9 @@
   when: testing != 'true'
   command: aa-enforce /etc/apparmor.d/usr.bin.youtube-dl
 
-- name: Enforce profile for ricochet
-  when: testing != 'true'
-  command: aa-enforce /usr/bin/ricochet
+# - name: Enforce profile for ricochet
+#   when: testing != 'true'
+#   command: aa-enforce /usr/bin/ricochet
 
 - name: Enforce profile for smplayer
   when: testing != 'true'
