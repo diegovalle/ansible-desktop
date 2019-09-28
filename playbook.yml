@@ -26,8 +26,9 @@
     adobe_reader_url: http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i386linux_enu.deb
     adobe_source_code_pro_url: https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip
     plex_download: https://downloads.plex.tv/plex-media-server/1.0.3.2461-35f0caa/plexmediaserver_1.0.3.2461-35f0caa_amd64.deb
-    go_tarball: "go1.11.5.linux-amd64.tar.gz"
-    go_tarball_checksum: "sha256:ff54aafedff961eb94792487e827515da683d61a5f9482f668008832631e5d25"
+    go_download_location: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
+    go_tarball: "go1.13.1.linux-amd64.tar.gz"
+    go_tarball_checksum: "sha256:94f874037b82ea5353f4061e543681a0e79657f787437974214629af8407d124"
     electrum_url: https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz
     rstudio_url: https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5001-amd64.deb
     emacs_version: emacs26
@@ -54,13 +55,13 @@
     - zopfli
     - youtube-dl
     - google-chrome
-    - gmvault
+    #- gmvault
     - virtualbox
     - unattended-upgrades
     - security
     - postgresql
     - borg
-    - go
+    #- go
     #- electrum
     - wikidpad
     - pycharm # check version

@@ -1,17 +1,17 @@
 - name: Install libsodium
   apt:
     pkg: libsodium-dev
-    state: installed
+    state: present
 
 - name: Install  build-essential
   apt:
     pkg:  build-essential
-    state: installed
+    state: present
 
 - name: Install cmake
   apt:
     pkg: cmake
-    state: installed
+    state: present
 
 - name: Create temp directory for downloading minisign
   command: mktemp -d /tmp/minisign.XXXXXX

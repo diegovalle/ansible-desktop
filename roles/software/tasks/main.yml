@@ -76,6 +76,7 @@
       - ledger
       - sox
       - python3-pip
+      - xscreensaver
     state: present
 
 - apt:
