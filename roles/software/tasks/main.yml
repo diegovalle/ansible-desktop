@@ -75,6 +75,7 @@
       - python3-libtorrent
       - ledger
       - sox
+      - python3-pip
     state: present
 
 - apt:
