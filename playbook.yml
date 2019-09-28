@@ -63,7 +63,7 @@
     - borg
     #- go
     #- electrum
-    - wikidpad
+    #- wikidpad
     - pycharm # check version
     - gephi # check version
     - filebot
