@@ -55,13 +55,6 @@
   when: stat_result.stat.exists == False
 
 - name:  add runsc as a runtime to your Docker configuration (/etc/docker/daemon.json)
-  blockinfile:
-    path: /etc/docker/daemon.json
-    block: |
-      {
-        "runtimes": {
-          "runsc": {
-            "path": "/usr/local/bin/runsc"
-           }
-        }
-      }
+  copy:
+    src: files/daemon.json
+    dest: /etc/docker/daemon.json
