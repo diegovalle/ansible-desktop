@@ -77,6 +77,8 @@
       - sox
       - python3-pip
       - xscreensaver
+      - libxml2-dev
+      - libxmlsec1-dev
     state: present
 
 - apt:
