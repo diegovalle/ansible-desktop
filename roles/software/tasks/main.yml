@@ -80,6 +80,8 @@
       - libxml2-dev
       - libxmlsec1-dev
       - steghide
+      - vim-gui-common
+      - vim-runtime
     state: present
 
 - apt:
