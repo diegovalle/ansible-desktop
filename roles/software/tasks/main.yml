@@ -79,6 +79,9 @@
       - xscreensaver
       - libxml2-dev
       - libxmlsec1-dev
+      - libprotobuf-dev
+      - libjq-dev 
+      - protobuf-compiler
       - steghide
       - vim-gui-common
       - vim-runtime
