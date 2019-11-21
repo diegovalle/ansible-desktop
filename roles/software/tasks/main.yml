@@ -82,6 +82,8 @@
       - steghide
       - vim-gui-common
       - vim-runtime
+      - parallel
+      - inkscape
     state: present
 
 - apt:
