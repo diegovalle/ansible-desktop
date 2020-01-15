@@ -68,7 +68,7 @@
     - gephi # check version
     - filebot
     - vscode
-    - atom
+    #- atom
     - brave
     - minisign
     - onionshare
