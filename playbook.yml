@@ -4,78 +4,76 @@
 
 
   tasks:
-  - name: install python 2
-    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal python-setuptools)
+  - name: install python
+    raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3 python3-setuptools)
   - name: updates a server
     apt: update_cache=yes autoremove=yes autoclean=yes
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+  - name: Install required package acl
+    apt:
+      pkg:
+        - acl
+        - python3-pip
+      state: latest
 
 - hosts: all
   vars:
+    ansible_python_interpreter: /usr/bin/python3
+    allow_world_readable_tmpfiles: true
     username: diego
-    postgre_version: 10
-    postgis_version: 2.4
-    appengine_url: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-151.0.1-linux-x86_64.tar.gz #x86
-    pycharm_version: 2018.3.4
+    rstudio_url: https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.4.1717-amd64.deb
+    rstudio_arch: amd64 # i386
+    emacs_version: emacs27
     keypassxc_version: 2.3.4
-    nvm_version: v0.34.0
+    nvm_version: v0.37.2
     gephi_version: 0.9.2
     nodejs_version: "10.x"
-    rstudio_arch: amd64 # i386
     wikidpad_version: 2.2
-    borg_version: 1.1.10
+    borg_version: 1.1.16
+    electrum_version: 4.1.5
     adobe_reader_url: http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i386linux_enu.deb
     adobe_source_code_pro_url: https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip
     plex_download: https://downloads.plex.tv/plex-media-server/1.0.3.2461-35f0caa/plexmediaserver_1.0.3.2461-35f0caa_amd64.deb
     go_download_location: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
     go_tarball: "go1.13.1.linux-amd64.tar.gz"
     go_tarball_checksum: "sha256:94f874037b82ea5353f4061e543681a0e79657f787437974214629af8407d124"
-    electrum_url: https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz
-    rstudio_url: https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5001-amd64.deb
-    emacs_version: emacs26
+    appengine_url: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-151.0.1-linux-x86_64.tar.gz
+    postgre_version: 10
+    postgis_version: 2.4
+    pycharm_version: 2021.2.1 #x86
   roles:
     - hosts
     - iptables
-    - tor-browser
+    - tor-user
     - incron
     - docker
     - apparmor
     - software
     - spanish
-    #- keepassxc
-    #- flexget
-    - nodejs
     - nvm
-    #- qgis
     - emacs
     - R
-    - R-sf
+    #- R-sf
     - r-studio
     - oh-my-zsh
     - rclone # check version and architecture
     - zopfli
     - youtube-dl
     - google-chrome
-    #- gmvault
     - virtualbox
     - unattended-upgrades
-    - security
-    - postgresql
     - borg
-    #- go
-    #- electrum
-    #- wikidpad
     - pycharm # check version
     - gephi # check version
-    - filebot
     - vscode
-    #- atom
     - brave
     - minisign
     - onionshare
-    #- fonts
-    # google-earth
+    - yubikey
+    - keepassxc # check version
+    - electrum # check version
+    #- flatpak
     # dnscrypt-proxy
-    # appengine
     # firejail
-    #- plex
-    #- opera
+    #- wikidpad

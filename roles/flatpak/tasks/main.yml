@@ -1,0 +1,46 @@
+- name: Add flatpak repo 
+  apt_repository:
+    repo: ppa:alexlarsson/flatpak
+    state: present
+    update_cache: yes
+
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: system
+    state: present
+    
+ name: Install Debian package
+  apt:
+    name:
+      - gnome-software-plugin-flatpak
+
+- name: Install the bitwarden flatpak from the gnome remote system-wide
+  flatpak:
+    name: com.bitwarden.desktop 
+    state: present
+  become: yes
+  become_user: "{{ username }}"
+
+- name: Install the UngoogledChromium flatpak from the gnome remote system-wide
+  flatpak:
+    name: com.github.Eloston.UngoogledChromium
+    state: present
+  become: yes
+  become_user: "{{ username }}"
+  
+- name: Install the org.qgis.qgis  flatpak from the gnome remote system-wide
+  flatpak:
+    name: org.qgis.qgis 
+    state: present
+  become: yes
+  become_user: "{{ username }}"
+  
+- name: Install the HandBrake flatpak from the gnome remote system-wide
+  flatpak:
+    name: fr.handbrake.ghb
+    state: present
+  become: yes
+  become_user: "{{ username }}"

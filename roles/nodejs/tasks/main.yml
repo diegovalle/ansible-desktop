@@ -25,14 +25,6 @@
     state: present
     update_cache: yes
 
-- name: Install phantomjs
-  command: bash -lc "npm install -g phantomjs-prebuilt --unsafe-perm"
-
-- name: Install casperjs
-  npm:  name=casperjs global=yes
-
 - name: Install simplehttpserver
   npm:  name=simplehttpserver global=yes
 
-- name: Install netlify-cli
-  npm:  name=netlify-cli global=yes

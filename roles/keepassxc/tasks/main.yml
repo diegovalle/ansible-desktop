@@ -2,7 +2,7 @@
   command: mktemp -d /tmp/keepassxc.XXXXXX
   register: mktemp_output
 
-- name: directories for flexget
+- name: directories for keepassxc
   shell: mkdir -p /home/{{ username }}/{{ apps_dir }}/
 
 - name: Download keepassxc

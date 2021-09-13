@@ -3,3 +3,9 @@
     name:
       - youtube-dl
     executable: pip3
+
+- name: pip yt-dlp
+  pip:
+    name:
+      - yt-dlp
+    executable: pip3

@@ -28,6 +28,10 @@
   tags:
     - r-repository-add
 
+- name: Add cran2deb4ubuntu Build Team repository from PPA and install its signing key on Debian target
+  ansible.builtin.apt_repository:
+    repo: 'ppa:c2d4u.team/c2d4u4.0+'
+
 - name: Install Packages
   apt:
     name: '{{r_packages}}'
@@ -47,7 +51,6 @@
   command: /usr/bin/Rscript --slave --no-save --no-restore-history -e "if (! ('{{item}}' %in% installed.packages()[,'Package'])) install.packages(pkgs='{{item}}', repos='https://cloud.r-project.org');quit(save = 'no', status = !require('{{item}}'))"
   with_items:
     - devtools
-    - rgdal
 
 # - name: Install tidyverse
 #   when: install_packages == true

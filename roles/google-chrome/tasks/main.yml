@@ -1,22 +1,28 @@
-    - name: Does the Google apt file exist?
-      command: test -f /etc/apt/sources.list.d/google-chrome.list
-      register: google_apt_exists
-      ignore_errors: True
+- name: Does the Google apt file exist?
+  command: test -f /etc/apt/sources.list.d/google-chrome.list
+  register: google_apt_exists
+  ignore_errors: True
 
-    - name: Install Google Key
-      apt_key: url=https://dl-ssl.google.com/linux/linux_signing_key.pub state=present
-      when: google_apt_exists.rc == 1
+- name: Install Google Key
+  apt_key:
+    id: A040830F7FAC5991
+    url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    state: present
+  when: google_apt_exists.rc == 1
 
-    - name: Add Google Repo
-      apt_repository: repo='deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
-      when: google_apt_exists.rc == 1
+- name: Add Google Repo
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    update_cache: true
+    filename: google-chrome
 
-    - name: Update apt cache
-      apt: update_cache=yes
-      when: google_apt_exists.rc == 1
+- name: Update apt cache
+  apt: update_cache=yes
+  when: google_apt_exists.rc == 1
 
-    - name: Install Packages
-      apt:
-        pkg:
-          - google-chrome-stable
-        state: latest
+- name: Install Packages
+  apt:
+    pkg:
+      - google-chrome-stable
+    state: latest
