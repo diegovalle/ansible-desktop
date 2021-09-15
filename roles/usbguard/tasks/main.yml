@@ -1,0 +1,29 @@
+- name: Install apt-transport-https packages
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - apt-transport-https
+    
+- name: Install usbguard package
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - usbguard
+    
+- name: make sure all devices are allowed by default
+  lineinfile: dest=/etc/usbguard/usbguard-daemon.conf line="ImplicitPolicyTarget=allow" state=present regexp='^ImplicitPolicyTarget'
+  
+# sudo usbguard list-devices  
+# sudo usbguard generate-policy --no-hashes >  /etc/usbguard/rules.conf
+- name: make sure all devices are allowed by default
+  lineinfile: dest=/etc/usbguard/rules.conf line="allow *:*" state=present create=yes
+         
+- name: Ensure usbguard is running and enabled as configured.
+  service:
+    name: "usbguard"
+    state: started
+    enabled: yes
