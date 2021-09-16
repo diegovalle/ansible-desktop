@@ -73,6 +73,8 @@
     - yubikey
     - keepassxc # check version
     - electrum # check version
+    #- usbguard
+    #- macchanger
     #- flatpak
     # dnscrypt-proxy
     # firejail
