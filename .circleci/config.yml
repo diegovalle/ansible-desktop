@@ -59,6 +59,7 @@ jobs:
     # You can remove the conditional and simply install the requirements file you use
     #- run: if [ -e requirements.txt ]; then pip3 install -r requirements.txt; else pip3 install -r requirements.pip; fi
     - run: pipx install --include-deps  ansible==4.5.0
+    - run: pipx ensurepath
     # Save dependency cache
     - save_cache:
         key: v1-dep-{{ .Branch }}-{{ epoch }}
