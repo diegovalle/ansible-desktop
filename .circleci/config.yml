@@ -53,7 +53,7 @@ jobs:
     # This is based on your 1.0 configuration file or project settings
     - run: |-
         apt -qq update
-        apt install -y python3 python3-pip python3-setuptools python3-dev build-essential libssl-dev libffi-dev sudo unzip zip man-db curl
+        DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC  apt install -y python3 python3-pip python3-setuptools python3-dev build-essential libssl-dev libffi-dev sudo unzip zip man-db curl
         useradd -m -c "Samwise the Brave" diego  -s /bin/bash -p '*'
     # The following line was run implicitly in your 1.0 builds based on what CircleCI inferred about the structure of your project. In 2.0 you need to be explicit about which commands should be run. In some cases you can discard inferred commands if they are not relevant to your project.
     # You can remove the conditional and simply install the requirements file you use
