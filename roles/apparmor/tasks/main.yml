@@ -10,21 +10,21 @@
     update_cache: yes
 
 
-- name: copy abstractions
-  copy:
-    src: files/abstractions
-    dest: /etc/apparmor.d/
-    owner: root
-    group: root
-    mode: 0644
+#- name: copy abstractions
+#  copy:
+#    src: files/abstractions
+#    dest: /etc/apparmor.d/
+#    owner: root
+#    group: root
+#    mode: 0644
 
-- name: copy tunables
-  copy:
-    src: files/tunables
-    dest: /etc/apparmor.d/
-    owner: root
-    group: root
-    mode: 0644
+#- name: copy tunables
+#  copy:
+#    src: files/tunables
+#    dest: /etc/apparmor.d/
+#    owner: root
+#    group: root
+#    mode: 0644
 
 # - name: ricochet apparmor profile
 #   copy:

@@ -21,6 +21,8 @@
 
 #  Allow SSH connections
 #-A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
+# Spiped
+-A INPUT -p tcp -m state --state NEW --dport 8022 -j ACCEPT
 
 #rsync
 #-A INPUT -p tcp -m tcp --sport 873 -m state --state ESTABLISHED -j ACCEPT

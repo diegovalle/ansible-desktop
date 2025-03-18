@@ -1,97 +1,102 @@
 - name: Install Packages
   apt:
     pkg:
+      - python3-virtualenvwrapper
+      - python3-virtualenv
+      - python3
+      - python3-dev
+      - python3-pip
+
       - acl
+      - alacarte
+      - apparmor
+      - apparmor-profiles
+      - apparmor-utils
       - aspell-es
       - audacious
+      - basez
       - ca-certificates
       - chromium-browser
       - colordiff
       - coreutils
       - curl
-      - curl
+      - ffmpeg
       - filezilla
       - firefox
+      - firejail
       - flatpak
       - gcc
       - gdebi
       - gimp
       - gnupg
-      - gnupg
+      - gpicview
       - hopenpgp-tools
       - htop
       - imagemagick
-      - imagemagick
+      - incron
       - inkscape
+      - iptables-persistent
       - ispell
       - jpegoptim
       - jq
       - ledger
-      - libavcodec-extra
-      - libcairo2-dev
-      - libffi-dev
-      - libfreetype6-dev
-      - libjq-dev
-      - libmagick++-dev
-      - libpoppler-cpp-dev
-      - libprotobuf-dev
-      - libssl-dev
-      - libudunits2-dev
-      - libxml2-dev
-      - libxmlsec1-dev
+      - linux-tools-generic
       - locales
       - lynx
+      - magic-wormhole
       - man-db
+      - menulibre
       - myspell-es
-      - nano
-      - network-manager-openvpn
-      - network-manager-openvpn-gnome
+      - nmap
       - openvpn
       - optipng
       - p7zip-full
       - p7zip-rar
       - parallel
+      - piper
+      - podman
       - poedit
+      - postgresql-client
       - protobuf-compiler
-      - python3-dev
-      - python3-libtorrent
-      - python3-pip
-      - python3-proselint
-      - python3-sphinx
-      - qbittorrent
+      - proxychains
       - qpdfview
       - rename
-      - rhythmbox
+      - ripgrep
       - shellcheck
+      - shfmt
       - siege
       - silversearcher-ag
+      - smartmontools
       - smplayer
+      - software-properties-common
       - sox
       - spatialite-gui
       - sqlite3
       - sqlitebrowser
       - steghide
-      - software-properties-common
       - sudo
+      - tarlz
       - telnet
+      - tlp
       - tor
       - traceroute
       - typecatcher
       - unrar
       - unzip
-      - vagrant
+      - update
+      - viewnior
       - vim-gui-common
       - vim-runtime
-      - virtualbox
-      - virtualenvwrapper
       - vlc
       - wget
       - whois
       - xclip
       - xscreensaver
       - zip
+      - zpaq
       - zsh
-#      - xubuntu-restricted-extras
+
+      #      - xubuntu-restricted-extras
     state: present
 
 - apt:
@@ -100,15 +105,15 @@
     state: latest
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
 
-- name: pip install various utilities
-  pip:
-    name:
-      - setuptools
-      - virtualenvwrapper
-      - httpie
-      - magic-wormhole
-      - docker-compose
-    executable: pip3
-    extra_args: --user
-  become: yes
-  become_user: "{{ username }}"
+# - name: pip install various utilities
+#   pip:
+#     name:
+#       - setuptools
+#       - virtualenvwrapper
+#       - httpie
+#       - magic-wormhole
+#       - docker-compose
+#     executable: pip3
+#     extra_args: --user
+#   become: yes
+#   become_user: "{{ username }}"

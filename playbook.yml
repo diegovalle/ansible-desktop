@@ -22,33 +22,32 @@
     ansible_python_interpreter: /usr/bin/python3
     allow_world_readable_tmpfiles: true
     username: diego
-    rstudio_url: https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.4.1717-amd64.deb
+    rstudio_url: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.12.1-563-amd64.deb
     rstudio_arch: amd64 # i386
     emacs_version: emacs27
-    keypassxc_version: 2.3.4
-    nvm_version: v0.37.2
-    gephi_version: 0.9.2
-    nodejs_version: "10.x"
-    wikidpad_version: 2.2
-    borg_version: 1.1.16
+    keypassxc_version: 2.7.1
+    nvm_version: v0.40.2
+    #gephi_version: 0.9.2
+    #nodejs_version: "10.x"
+    #wikidpad_version: 2.2
+    #borg_version: 1.1.16
     electrum_version: 4.1.5
-    adobe_reader_url: http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i386linux_enu.deb
-    adobe_source_code_pro_url: https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip
-    plex_download: https://downloads.plex.tv/plex-media-server/1.0.3.2461-35f0caa/plexmediaserver_1.0.3.2461-35f0caa_amd64.deb
-    go_download_location: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
-    go_tarball: "go1.13.1.linux-amd64.tar.gz"
-    go_tarball_checksum: "sha256:94f874037b82ea5353f4061e543681a0e79657f787437974214629af8407d124"
-    appengine_url: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-151.0.1-linux-x86_64.tar.gz
-    postgre_version: 10
-    postgis_version: 2.4
-    pycharm_version: 2021.2.1 #x86
+    #adobe_reader_url: http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i386linux_enu.deb
+    #adobe_source_code_pro_url: https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip
+    #plex_download: https://downloads.plex.tv/plex-media-server/1.0.3.2461-35f0caa/plexmediaserver_1.0.3.2461-35f0caa_amd64.deb
+    #go_download_location: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
+    #go_tarball: "go1.13.1.linux-amd64.tar.gz"
+    #go_tarball_checksum: "sha256:94f874037b82ea5353f4061e543681a0e79657f787437974214629af8407d124"
+    #appengine_url: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-151.0.1-linux-x86_64.tar.gz
+    #postgre_version: 10
+    #postgis_version: 2.4
+    #pycharm_version: 2021.2.1 #x86
   roles:
-    - hosts
     - iptables
     - tor-user
     - incron
     - docker
-    - apparmor
+    #- apparmor
     - software
     - spanish
     - nvm
@@ -59,17 +58,16 @@
     - oh-my-zsh
     - rclone # check version and architecture
     - zopfli
-    - youtube-dl
     - google-chrome
     - virtualbox
     - unattended-upgrades
-    - borg
-    - pycharm # check version
-    - gephi # check version
+    #- borg
+    #- pycharm # check version
+    #- gephi # check version
     - vscode
     - brave
     - minisign
-    - onionshare
+    #- onionshare
     - yubikey
     - keepassxc # check version
     - electrum # check version
