@@ -43,7 +43,7 @@
     #postgis_version: 2.4
     #pycharm_version: 2021.2.1 #x86
   roles:
-    #- iptables
+    - iptables
     - tor-user
     - incron
     - docker
