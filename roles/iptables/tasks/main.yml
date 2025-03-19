@@ -13,5 +13,5 @@
   notify:
     - restart iptables-persistent
 
-- name: ensure iptables-persistent restarted
-  ansible.builtin.service: name=netfilter-persistent state=restarted
+# - name: ensure iptables-persistent restarted
+#   ansible.builtin.service: name=netfilter-persistent state=restarted
