@@ -5,14 +5,31 @@
 
   - name: Download rclone
     get_url:
-      url: "https://downloads.rclone.org/rclone-current-linux-amd64.zip"
-      dest: "{{ mktemp_output.stdout }}/rclone.zip"
+      url: "https://downloads.rclone.org/{{ rclone_version }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
+      dest: "{{ mktemp_output.stdout }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
       owner: root
       group: root
       mode: 0644
+      
+  - name: Download rclone signature
+    get_url:
+      url: "https://downloads.rclone.org/{{ rclone_version }}/SHA256SUMS"
+      dest: "{{ mktemp_output.stdout }}/SHA256SUMS"
+      owner: root
+      group: root
+      mode: "u+rwx,g+rwx,o-rwx"
+      
+  - name: Get GPG key
+    shell: >
+      gpg --keyserver ha.pool.sks-keyservers.net --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA ||
+      gpg --keyserver pgp.mit.edu --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA ||
+      gpg --keyserver keyserver.ubuntu.com --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA
+
+  - name: Verify downloaded rclone archive
+    ansible.builtin.shell: h=$(gpg --decrypt SHA256SUMS) && echo "$h" | sha256sum - -c --ignore-missing chdir={{ mktemp_output.stdout }}
 
   - name: Unzip rclone
-    shell: unzip -j "{{ mktemp_output.stdout }}"/rclone.zip -d "{{ mktemp_output.stdout }}"  warn=False
+    shell: unzip -j "{{ mktemp_output.stdout }}"/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip -d "{{ mktemp_output.stdout }}"
 
   - name: Move rclone to /usr/local/bin/
     copy:

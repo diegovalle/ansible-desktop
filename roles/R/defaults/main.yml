@@ -2,14 +2,7 @@
 r_repository:
   - type: deb
     url: "https://cloud.r-project.org/bin/linux/ubuntu  {{ ansible_distribution_release }}-cran40/"
-r_packages: ['r-base', 'r-base-dev',
-             'curl', 
-             'libfontconfig1-dev',
-             'libharfbuzz-dev',
-             'libfribidi-dev',
-             'libxml2-dev', 'libsqlite3-dev',
-              'libgeos-dev', 'libudunits2-dev', 'libnode-dev', 'libcairo2-dev', 'libnetcdf-dev',
-             'libgdal-dev', 'libproj-dev', 'libssl-dev']
+r_packages: ['r-base', 'r-base-dev', 'curl']
 deploy_user_name: diego
 username: diego
 install_packages: true

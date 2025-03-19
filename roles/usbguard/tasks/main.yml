@@ -27,3 +27,4 @@
     name: "usbguard"
     state: started
     enabled: yes
+  when: docker is undefined

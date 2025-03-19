@@ -1,18 +1,18 @@
 ---
 
 - name: Ensure group "radmin" exists
-  group:
+  ansible.builtin.group:
     name: radmin
     state: present
-    
-- name: adding existing user "{{ username }}" to group radmin
-  user:
+
+- name: Adding existing user to group radmin "{{ username }}"
+  ansible.builtin.user:
     name: "{{ username }}"
     groups: radmin
-    append: yes
+    append: true
 
 - name: Add R repository public key
-  apt_key:
+  ansible.builtin.apt_key:
     id: E298A3A825C0D65DFD57CBB651716619E084DAB9
     keyserver: keyserver.ubuntu.com
     state: present
@@ -20,7 +20,7 @@
     - r-repository-public-key
 
 - name: Add R repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item.type }} {{ item.url }}"
     state: present
     update_cache: true
@@ -28,35 +28,33 @@
   tags:
     - r-repository-add
 
-- name: Add cran2deb4ubuntu Build Team repository from PPA and install its signing key on Debian target
-  ansible.builtin.apt_repository:
-    repo: 'ppa:c2d4u.team/c2d4u4.0+'
-
 - name: Install Packages
-  apt:
-    name: '{{r_packages}}'
+  ansible.builtin.apt:
+    name: '{{ r_packages }}'
     state: latest
 
 - name: Creates .Rprofile with default repo
-  lineinfile: dest=/home/{{ username }}/.Rprofile line='local({r <- getOption("repos");r["CRAN"] <- "https://cloud.r-project.org";options(repos = r)})' create=True
+  ansible.builtin.lineinfile:
+    dest: /home/{{ username }}/.Rprofile
+    line: 'local({r <- getOption("repos");r["CRAN"] <- "https://cloud.r-project.org";options(repos = r)})'
+    create: true
+    owner: '{{ username }}'
+    group: '{{ username }}'
+    mode: '0600'
 
 - name: Creates .Renviron with default lib path
-  lineinfile: dest=/home/{{ username }}/.Renviron line='#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages' create=True
+  ansible.builtin.lineinfile:
+    dest: /home/{{ username }}/.Renviron
+    line: '#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages'
+    create: true
+    owner: '{{ username }}'
+    group: '{{ username }}'
+    mode: '0600'
 
 - name: Ensure /usr/local/lib/R/site-library/ is writable by radmin
-  file: dest=/usr/local/lib/R/site-library/ owner=root group=radmin mode=u=rwX,g=rwX,o=rX recurse=yes
-
-- name: Add R packages
-  when: install_packages == true
-  command: /usr/bin/Rscript --slave --no-save --no-restore-history -e "if (! ('{{item}}' %in% installed.packages()[,'Package'])) install.packages(pkgs='{{item}}', repos='https://cloud.r-project.org');quit(save = 'no', status = !require('{{item}}'))"
-  with_items:
-    - devtools
-
-# - name: Install tidyverse
-#   when: install_packages == true
-#   command: /usr/bin/Rscript --slave --no-save --no-restore-history -e "if (! ('{{item}}' %in% installed.packages()[,'Package'])) install.packages('{{item}}', repos = 'https://cloud.r-project.org')"
-#   with_items:
-#     - tidyverse
-
-#- name: Config java
-#  command: R CMD javareconf
+  ansible.builtin.file:
+    dest: /usr/local/lib/R/site-library/
+    owner: root
+    group: radmin
+    mode: u=rwX,g=rwX,o=rX
+    recurse: true

@@ -26,10 +26,11 @@
   notify:
     - restart iptables-persistent
 
-# - name: ensure netfilter-persistent restarted
-#   service:
-#     name: netfilter-persistent
-#     state: started
+- name: ensure netfilter-persistent restarted
+  service:
+    name: netfilter-persistent
+    state: started    
+  when: docker is undefined
 
 # Tor
 
@@ -51,3 +52,4 @@
 
 - name: ensure tor is running
   service: name=tor state=started
+  when: docker is undefined
