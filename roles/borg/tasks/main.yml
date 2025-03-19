@@ -22,9 +22,9 @@
 
 - name: Get GPG key
   shell: >
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 9F88FB52FAF7B393 ||
-    gpg --keyserver pgp.mit.edu --recv-keys 9F88FB52FAF7B393 ||
-    gpg --keyserver keyserver.ubuntu.com --recv-keys 9F88FB52FAF7B393
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 6D5BEF9ADD2075805747B70F9F88FB52FAF7B393 ||
+    gpg --keyserver pgp.mit.edu --recv-keys 6D5BEF9ADD2075805747B70F9F88FB52FAF7B393 ||
+    gpg --keyserver keyserver.ubuntu.com --recv-keys 6D5BEF9ADD2075805747B70F9F88FB52FAF7B393
 
 - name: Verify downloaded archive
   command: gpg --verify borg.asc chdir={{ mktemp_output.stdout }}

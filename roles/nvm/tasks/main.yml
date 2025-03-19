@@ -1,4 +1,4 @@
-- name: nvm
+- name: Install nvm
   shell: >
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh | bash
   args:
@@ -6,7 +6,7 @@
   become: yes
   become_user: "{{ username }}"
 
-- name: Install node and set version
+- name: Source nvm
   shell: >
     /bin/bash -c "source ~/.nvm/nvm.sh"
     creates=/home/{{ ansible_user_id }}/.nvm/alias

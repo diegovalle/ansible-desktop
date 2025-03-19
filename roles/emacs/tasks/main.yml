@@ -1,10 +1,15 @@
 ---
 - name: install emacs repo
   apt_repository:
-    repo: ppa:kelleyk/emacs
+    repo: ppa:ubuntuhandbook1/emacs
     update_cache: yes
 
 - name: install emacs
   apt:
-    name: "{{ emacs_version }}"
+    name: emacs
+    state: present
+
+- name: install emacs
+  apt:
+    name: emacs-common
     state: present

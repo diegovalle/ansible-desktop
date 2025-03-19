@@ -29,5 +29,3 @@
 
 - name: make minisign
   shell: mkdir build && cd build && cmake .. && make && make install  chdir={{ mktemp_output.stdout }}
-  args:
-    warn: false

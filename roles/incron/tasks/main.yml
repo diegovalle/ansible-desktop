@@ -22,4 +22,5 @@
     name: "incron"
     state: started
     enabled: yes
+  when: docker is undefined
 
