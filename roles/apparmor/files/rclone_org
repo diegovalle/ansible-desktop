@@ -1,0 +1,50 @@
+# aa-exec -p rclone_torrents --
+# sudo apparmor_parser -r /etc/apparmor.d/rclone_dropbox
+ 
+# /etc/apparmor.d/node_sandbox
+#include <tunables/global>
+
+profile rclone_org {
+  /usr/bin/rclone ixr,
+  #########################################333
+  # Directories to work with
+  #########################################333
+  # Access to basic OS functions
+  #include <abstractions/base>
+  # Communicate with terminals
+  #include <abstractions/consoles>
+  #include <abstractions/private-files>
+  #include <abstractions/lightdm>
+
+  deny ptrace,
+
+  # Access network
+  network,
+  # Read DNS resolver parameters
+  /run/systemd/resolve/stub-resolv.conf r,
+  # Read procfs
+  /proc/** r,
+  # Read OS configuration
+  /etc/** r,
+  # Execute OS binaries
+  #/sys/** r,
+  #/{usr/,}bin/* ixr,
+  
+  
+  # Work with tmp files
+  #/tmp/ rw,
+  #/tmp/** rw,
+  
+  deny /home/*/Private/ rw,  
+  deny /home/*/Pictures/ rw, 
+  deny /home/*/Videos/ rw,  
+  deny /home/*/bin/ rwx,  
+  deny /home/*/.config/ rw,  
+  deny /home/*/.ssh/ rw,
+  owner @{HOME}/{,[^.]**/} r,
+  owner /home/*/.rclone.conf r,
+  owner /home/*/Documents/org/** rw,
+  /usr/share/mime/globs2 r, 
+}
+# kate: syntax AppArmor Security Profile
+# vim:  syntax=apparmor

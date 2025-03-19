@@ -1,0 +1,105 @@
+# alias node='aa-exec -p node_sandbox -- node'
+# alias npm='aa-exec -p node_sandbox -- npm'
+# alias gatsby='aa-exec -p node_sandbox -- gatsby'
+# sudo apparmor_parser -r /etc/apparmor.d/node_sandbox
+ 
+# /etc/apparmor.d/node_sandbox
+##-include <tunables/global>
+
+profile node_sandbox {
+
+  #########################################333
+  # Directories to work with
+  #########################################333
+  /home/**/Documents/personal/Math/drug-war/elcri.men/new.crimenmexico/elcri.men/** mrwlk,
+  /home/**/Webs/armadillo/** mrwlk,
+  /home/**/Webs/ilsevalle.com/static/gatsby-ilsevalle/** mrwlk,
+  /home/**/Webs/diegovalle.net/gatsby/www.diegovalle.net/** mrwlk,
+  /home/**/Math/drug-war/hoyodecrimen.api/hoyodecrimen.com/** mrwlk,
+  /home/**/crime-dashboard/** mrwl,
+  /home/**/cloudflare_failover/** mrwl,
+  /home/**/cloudflare_change_hoyodecrimen/** mrwl,
+  /home/**/cloudflare_change_detection/** mrwl,
+
+  #environment set GATSBY_TELEMETRY_DISABLED=1,
+  #environment set NEXT_TELEMETRY_DISABLED=1,
+  
+  deny /etc/machine-id rw,
+  
+  
+    owner /home/*/.npm/_* lrw,
+    owner /home/*/.npm/_*/ lrw,
+    owner /home/*/.npm/_*/** lrw,
+    owner /home/*/.npmrc r,
+
+    owner /home/**/node_modules/ rwix,
+    owner /home/**/node_modules/** rwix,
+    owner /home/**/package.json rw,
+    owner /home/**/package-lock.json rw,
+  
+  # Access to basic OS functions
+  ##include <abstractions/base>
+  # Communicate with terminals
+  ##include <abstractions/consoles>
+  ##include <abstractions/private-files>
+  # Work with history in CLI mode
+  /home/*/.node_repl_history rw,
+  # Access network
+  network,
+  #network inet,
+  #network inet6,
+  #network tcp,
+  # Read DNS resolver parameters
+  /run/systemd/resolve/stub-resolv.conf r,
+  # Read procfs
+  /proc/** r,
+  /proc/cpuinfo r,
+  # Read OS configuration
+  /etc/** r,
+  # Execute OS binaries
+      /sys/** r,
+    /{usr/,}bin/* ixr,
+  # Work with npm and yarn
+  /usr/share/yarn/** rix,
+  /home/*/.config/yarn/global/node_modules/.bin/** rix,
+  /home/*/.config/yarn/** rix,
+  /home/*/.config/npm/** rix,
+  /home/diego/.config/gatsby/** rwix,
+  /home/*/.nvm/versions/** rix,
+  /home/*/.npm/** rwl,
+  owner /home/*/.npmrc r,
+  /home/*/.yarn/** rwl,
+  /home/*/.cache/yarn/ rwl,
+  /home/*/.cache/yarn/** rwl,
+  /home/*/.npmrc rw,
+  /home/*/.yarnrc rw,
+  /home/*/**/node_modules/** mrwix,
+  # Work with tmp files
+  /tmp/ rw,
+  /tmp/** rw,
+  # Work with NVS
+  /opt/nvs/ r,
+  /opt/nvs/** rwixlm,
+  # Do anything with projects
+  /srv/node/** rwixlkm,
+  # Work with module configuration stored in user directory
+  /home/*/.config/configstore/ rw,
+  /home/*/.config/configstore/** rw,
+  # Read WebStorm plugin configuration
+  /home/*/.local/share/JetBrains/Toolbox/apps/WebStorm/ch-0/*/plugins/** r,
+  # Enable Node.js assist in WebStorm
+  /home/**/node-typings/ rwixlkm,
+  /home/**/node-typings/** rwixlkm,
+  
+  owner @{HOME}/{,[^.]**/} r,
+  #/** rw,
+  #deny @{HOME}/Documents/ rw,  
+  deny @{HOME}/Private/ rw,  
+  deny @{HOME}/Pictures/ rw, 
+  deny @{HOME}/Videos/ rw,  
+  deny @{HOME}/bin/ rwx,  
+  #deny @{HOME}/.config/ rw,  
+  deny @{HOME}/.ssh/ rw,
+}
+# kate: syntax AppArmor Security Profile
+# vim:  syntax=apparmor

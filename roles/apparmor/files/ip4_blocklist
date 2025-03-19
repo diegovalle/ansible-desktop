@@ -1,0 +1,55 @@
+# aa-exec -p ip4_blocklist
+# sudo apparmor_parser -r /etc/apparmor.d/ip4_blocker
+ 
+# /etc/apparmor.d/node_sandbox
+#include <tunables/global>
+
+profile ip4_blocklist {
+  owner @{HOME}/.curlrc r,
+  #########################################333
+  # Directories to work with
+  #########################################333
+  # Access to basic OS functions
+  #include <abstractions/base>
+  # Communicate with terminals
+  #include <abstractions/consoles>
+  #include <abstractions/private-files>
+  # Access network
+  network,
+  # Read DNS resolver parameters
+  /run/systemd/resolve/stub-resolv.conf r,
+  # Read procfs
+  /proc/** r,
+  # Read OS configuration
+  /etc/** r,
+  # Execute OS binaries
+  #/sys/** r,
+  #/{usr/,}bin/* ixr,
+  /{usr/,}bin/curl ixr,
+  /{usr/,}bin/sed ixr,
+  /{usr/,}bin/egrep ixr,
+  /{usr/,}bin/grep ixr,
+  /{usr/,}bin/xargs ixr,
+  /{usr/,}bin/gunzip ixr,
+  /{usr/,}bin/gzip ixr,
+  /{usr/,}bin/uniq ixr,
+  /{usr/,}bin/bsdtar ixr,
+  
+  
+  # Work with tmp files
+  #/tmp/ rw,
+  #/tmp/** rw,
+  deny @{HOME} rw,
+  @{HOME}/Downloads/torrents/complete/ipv4_filter.p2p rw,
+  @{HOME}/Downloads/torrents/complete/guarding.dat rw,
+  
+  deny @{HOME}/Documents/ rw,  
+  deny @{HOME}/Private/ rw,  
+  deny @{HOME}/Pictures/ rw, 
+  deny @{HOME}/Videos/ rw,  
+  deny @{HOME}/bin/ rwx,  
+  deny @{HOME}/.config/ rw,  
+  deny @{HOME}/.ssh/ rw,
+}
+# kate: syntax AppArmor Security Profile
+# vim:  syntax=apparmor

@@ -50,6 +50,6 @@
   #     owner="{{username}}"
   #     mode=0755
   #     state=file
-
-  - name: Add a user that can only connect to the internet through tor
-    include: toruser.yml
+---
+- name: Add a user that can only connect to the internet through tor
+  ansible.builtin.include_tasks: toruser.yml

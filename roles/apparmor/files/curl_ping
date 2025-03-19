@@ -1,0 +1,53 @@
+# aa-exec -p curl_ping
+# sudo apparmor_parser -r /etc/apparmor.d/curl_ping
+ 
+# /etc/apparmor.d/node_sandbox
+#include <tunables/global>
+
+profile curl_ping {
+  /usr/bin/curl r,
+  owner @{HOME}/.curlrc r,
+  #########################################333
+  # Directories to work with
+  #########################################333
+  # Access to basic OS functions
+  #include <abstractions/base>
+  # Communicate with terminals
+  #include <abstractions/consoles>
+  #include <abstractions/private-files>
+  #include <abstractions/openssl>
+  #include <abstractions/ssl_certs>
+  # Access network
+  network inet,
+  network inet6,
+  # Read DNS resolver parameters
+  /run/systemd/resolve/stub-resolv.conf r,
+  # Read procfs
+  /proc/** r,
+  # Read OS configuration
+  /etc/** r,
+  # Execute OS binaries
+  #/sys/** r,
+  #/{usr/,}bin/* ixr,
+  
+  signal (receive) peer=unconfined,
+  deny signal (send) peer=unconfined,
+  deny ptrace, 
+  
+  
+  # Work with tmp files
+  #/tmp/ rw,
+  #/tmp/** rw,
+  #deny @{HOME} rw,
+  deny / rw,
+  
+  deny @{HOME}/Documents/ rw,  
+  deny @{HOME}/Private/ rw,  
+  deny @{HOME}/Pictures/ rw, 
+  deny @{HOME}/Videos/ rw,  
+  deny @{HOME}/bin/ rwx,  
+  deny @{HOME}/.config/ rw,  
+  deny @{HOME}/.ssh/ rw,
+}
+# kate: syntax AppArmor Security Profile
+# vim:  syntax=apparmor
