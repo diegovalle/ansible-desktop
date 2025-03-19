@@ -24,7 +24,7 @@
     username: diego
     rstudio_url: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.12.1-563-amd64.deb
     rstudio_arch: amd64 # i386
-    emacs_version: emacs27
+    emacs_version: emacs30
     keypassxc_version: 2.7.1
     nvm_version: v0.40.2
     #gephi_version: 0.9.2
@@ -43,7 +43,7 @@
     #postgis_version: 2.4
     #pycharm_version: 2021.2.1 #x86
   roles:
-    - iptables
+    #- iptables
     - tor-user
     - incron
     - docker
