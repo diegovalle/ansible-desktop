@@ -2,7 +2,7 @@
 r_repository:
   - type: deb
     url: "https://cloud.r-project.org/bin/linux/ubuntu  {{ ansible_distribution_release }}-cran40/"
-r_packages: ['r-base', 'r-base-dev', 'curl']
+r_packages: ["r-base", "r-base-dev", "curl"]
 deploy_user_name: diego
 username: diego
 install_packages: true

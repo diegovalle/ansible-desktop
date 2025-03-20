@@ -1,60 +1,37 @@
 ---
 - name: Ensure old versions of Docker are not installed.
-  package:
+  ansible.builtin.package:
     name:
       - docker
       - docker-engine
     state: absent
 
-- name: dependencies are installed.
-  apt:
+- name: Dependencies are installed.
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - ca-certificates
     state: present
 
-- name: add Docker apt key.
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+- name: Add Docker Module Repository
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: [deb]
+    uris: "https://download.docker.com/linux/{{ ansible_distribution | lower }}"
+    signed_by: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    suites: ["{{ ansible_distribution_release | lower }}"]
+    components: [stable]
     state: present
+    enabled: true
 
-- name: add Docker repository.
-  apt_repository:
-    repo: "{{ docker_apt_repository }}"
-    state: present
+- name: Run the equivalent of "apt-get update"
+  ansible.builtin.apt:
     update_cache: true
 
 - name: Install Docker.
-  apt:
+  ansible.builtin.apt:
     pkg:
       - docker-ce
       - docker-ce-cli
       - containerd.io
-  notify: restart docker
-
-- name: download gvisor
-  get_url:
-    url: https://storage.googleapis.com/gvisor/releases/nightly/latest/runsc
-    dest: /usr/local/bin/runsc
-
-- name: create /etc/docker
-  file:
-    path: /etc/docker
-    state: directory
-
-- name: Check that the /etc/docker/daemon.json exists
-  stat:
-    path: /etc/docker/daemon.json
-  register: stat_result
-
-- name: Create /etc/docker/daemon.json, if it doesnt exist already
-  file:
-    path: /etc/docker/daemon.json
-    state: touch
-  when: stat_result.stat.exists == False
-
-- name:  add runsc as a runtime to your Docker configuration (/etc/docker/daemon.json)
-  copy:
-    src: files/daemon.json
-    dest: /etc/docker/daemon.json
+  notify: Restart docker

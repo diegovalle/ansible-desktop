@@ -1,48 +1,52 @@
+---
 - name: Install git and zsh
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: latest
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
       - git
       - zsh
       - git-core
 
-
-# - name: Backing up existing ~/.zshrc
-#   shell: if [ -f ~/.zshrc ]; then cp ~/.zshrc{,.orig}; fi
+- name: Backing up existing ~/.zshrc
+  ansible.builtin.shell: if [ -f ~/.zshrc ]; then cp ~/.zshrc{,.orig}; fi
 
 - name: Clone oh-my-zsh repo
-  become: yes
+  become: true
   become_user: "{{ username }}"
-  git:
-    repo=https://github.com/robbyrussell/oh-my-zsh.git
-    dest=/home/{{user}}/.oh-my-zsh
+  ansible.builtin.git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: /home/{{ user }}/.oh-my-zsh
 
 - name: Clone powerline9k repo
-  become: yes
+  become: true
   become_user: "{{ username }}"
-  git:
-    repo=https://github.com/bhilburn/powerlevel9k.git
-    dest=/home/{{user}}/.oh-my-zsh/custom/themes/powerlevel9k
+  ansible.builtin.git:
+    repo: https://github.com/bhilburn/powerlevel9k.git
+    dest: /home/{{ user }}/.oh-my-zsh/custom/themes/powerlevel9k
 
 - name: Set zsh as default shell
-  user: name={{user}} shell=/bin/zsh
+  ansible.builtin.user:
+    name: "{{ user }}"
+    shell: /bin/zsh
 
-- name: Create temp file for powerline fonts
-  command: mktemp -d /tmp/ansible.XXXXXXXX
+- name: Create temp directory for downloading oh-my-zsh
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: zsh
   register: mktemp_output
 
 - name: Clone Powerline fonts
-  git:
-    repo=https://github.com/powerline/fonts
-    dest={{ mktemp_output.stdout }}/powerlinefonts
-    accept_hostkey=yes
+  ansible.builtin.git:
+    repo: https://github.com/powerline/fonts
+    dest: "{{ mktemp_output.path }}/powerlinefonts"
+    accept_hostkey: "yes"
   register: font_cloned
 
 - name: Install Powerline Fonts
-  shell:
-    ./install.sh
-    chdir={{mktemp_output.stdout}}/powerlinefonts
+  ansible.builtin.command:
+    chdir: "{{ mktemp_output.path }}/powerlinefonts"
+    cmd: ./install.sh
   when: font_cloned is success

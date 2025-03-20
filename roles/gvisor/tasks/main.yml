@@ -1,0 +1,44 @@
+---
+# gVisor
+- name: Add gVisor repository
+  ansible.builtin.deb822_repository:
+    name: gvisor
+    types: [deb]
+    uris: https://storage.googleapis.com/gvisor/releases
+    signed_by: "https://gvisor.dev/archive.key"
+    components: [main]
+    suites: [release]
+
+- name: Run the equivalent of "apt-get update"
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Docker.
+  ansible.builtin.apt:
+    pkg:
+      - runsc
+  notify: Restart docker
+
+- name: Create /etc/docker
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    mode: '640'
+
+- name: Check that the /etc/docker/daemon.json exists
+  ansible.builtin.stat:
+    path: /etc/docker/daemon.json
+  register: stat_result
+
+- name: Create /etc/docker/daemon.json, if it doesnt exist already
+  ansible.builtin.file:
+    path: /etc/docker/daemon.json
+    state: touch
+    mode: '640'
+  when: not stat_result.stat.exists
+
+- name: Add runsc as a runtime to your Docker configuration (/etc/docker/daemon.json)
+  ansible.builtin.copy:
+    src: files/daemon.json
+    dest: /etc/docker/daemon.json
+    mode: '644'

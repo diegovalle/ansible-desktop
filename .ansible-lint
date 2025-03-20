@@ -1,2 +1,5 @@
 skip_list:
-  - '403'
+  - package-latest
+  - latest[git]
+  - no-changed-when
+  - var-naming[no-role-prefix]

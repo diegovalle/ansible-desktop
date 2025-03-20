@@ -1,41 +1,43 @@
+---
 - name: Install apt-transport-https packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
-    - apt-transport-https
-    
+      - apt-transport-https
+
 - name: Install macchanger package
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
-    - macchanger
-    
+      - macchanger
+
 - name: Copy systemd service
   ansible.builtin.copy:
     content: |
-              [Unit]
-              Description=changes mac for %I
-              Wants=network.target
-              Before=network.target
-              BindsTo=sys-subsystem-net-devices-%i.device
-              After=sys-subsystem-net-devices-%i.device
-              
-              [Service]
-              Type=oneshot
-              ExecStart=/usr/bin/macchanger -r %I
-              RemainAfterExit=yes
-              
-              [Install]
-              WantedBy=multi-user.target
-    dest: /etc/systemd/system/changemac@.service
+      [Unit]
+      Description=changes mac for %I
+      Wants=network.target
+      Before=network.target
+      BindsTo=sys-subsystem-net-devices-%i.device
+      After=sys-subsystem-net-devices-%i.device
 
-#sudo systemctl enable changemac@enp0s25.service
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/bin/macchanger -r %I
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/changemac@.service
+    mode: "0640"
+
+# sudo systemctl enable changemac@enp0s25.service
 - name: Ensure macchanger is running and enabled as configured.
-  service:
+  ansible.builtin.service:
     name: "macchanger"
-    enabled: yes
+    enabled: true
   when: docker is undefined

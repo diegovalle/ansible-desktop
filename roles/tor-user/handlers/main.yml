@@ -1,9 +1,18 @@
 ---
-- name: start iptables-persistent
-  service: name=netfilter-persistent state=started
+- name: Start iptables-persistent
+  ansible.builtin.service:
+    name: netfilter-persistent
+    state: started
+  when: docker is undefined
 
-- name: restart iptables-persistent
-  service: name=netfilter-persistent state=restarted
+- name: Restart iptables-persistent
+  ansible.builtin.service:
+    name: netfilter-persistent
+    state: restarted
+  when: docker is undefined
 
-- name: restart tor
-  service: name=tor state=restarted
+- name: Restart tor
+  ansible.builtin.service:
+    name: tor
+    state: restarted
+  when: docker is undefined

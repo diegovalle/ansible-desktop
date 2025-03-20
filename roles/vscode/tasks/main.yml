@@ -1,24 +1,27 @@
+---
 - name: Install apt-transport-https packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
-    - apt-transport-https
+      - apt-transport-https
 
-- name: Add microsoft repository key
-  apt_key: url=https://packages.microsoft.com/keys/microsoft.asc state=present
-
-- name: Add vscode repository
-  apt_repository:
-    repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+- name: Add VSCode APT repository
+  ansible.builtin.deb822_repository:
+    name: vscode
+    types: [deb]
+    uris: "https://packages.microsoft.com/repos/code"
+    signed_by: "https://packages.microsoft.com/keys/microsoft.asc"
+    suites: [stable]
+    components: [main]
     state: present
-    filename: vscode
+    enabled: true
 
 - name: Install vscode package
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
-    - code
+      - code

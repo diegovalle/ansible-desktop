@@ -1,55 +1,72 @@
-- name: install iptables-persistent
-  apt: pkg=iptables-persistent state=present update_cache=true
+---
+- name: Install iptables-persistent
+  ansible.builtin.apt:
+    pkg: iptables-persistent
+    state: present
+    update_cache: "true"
   notify:
-    - start iptables-persistent
+    - Start iptables-persistent
+  when: docker is undefined
 
 # Add user
 
 - name: Add the user 'tor'
-  user:
+  ansible.builtin.user:
     name: tor
     groups: audio
     shell: /bin/bash
-    append: yes
+    append: true
     uid: 1634
     state: present
 
 # Iptables
 
-- name: set firewall rules v4
-  copy: src={{ iptables_file_v4 }} dest=/etc/iptables/rules.v4 owner=root group=root mode=644
+- name: Set firewall rules v4
+  ansible.builtin.copy:
+    src: "{{ iptables_file_v4 }}"
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: "640"
   notify:
-    - restart iptables-persistent
+    - Restart iptables-persistent
 
-- name: set firewall rules v6
-  copy: src={{ iptables_file_v6 }} dest=/etc/iptables/rules.v6 owner=root group=root mode=644
+- name: Set firewall rules v6
+  ansible.builtin.copy:
+    src: "{{ iptables_file_v6 }}"
+    dest: /etc/iptables/rules.v6
+    owner: root
+    group: root
+    mode: "640"
   notify:
-    - restart iptables-persistent
+    - Restart iptables-persistent
 
-- name: ensure netfilter-persistent restarted
-  service:
+- name: Ensure netfilter-persistent restarted
+  ansible.builtin.service:
     name: netfilter-persistent
-    state: started    
+    state: started
   when: docker is undefined
 
 # Tor
 
-- name: tor package
-  package:
+- name: Tor package
+  ansible.builtin.package:
     name: tor
     state: present
 
-- name: configure tor to resolve onion hostnames
-  blockinfile:
+- name: Configure tor to resolve onion hostnames
+  ansible.builtin.blockinfile:
     path: /etc/tor/torrc
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
     block: |
       TransPort 9040
       DNSPort 5300
       AutomapHostsOnResolve 1
 
-- name: ensure tor is running
-  service: name=tor state=started
+- name: Ensure tor is running
+  ansible.builtin.service:
+    name: tor
+    state: started
   when: docker is undefined

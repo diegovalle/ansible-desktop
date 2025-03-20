@@ -1,15 +1,29 @@
 ---
-- name: Configure the Oracle APT key
-  apt_key: url=https://www.virtualbox.org/download/oracle_vbox.asc
-           state=present
+# - name: Configure the Oracle APT key
+#   ansible.builtin.get_url:
+#     url: https://www.virtualbox.org/download/oracle_vbox.asc
+#     dest: /usr/share/keyrings/oracle_vbox.asc
+#     mode: "0640"
 
-- name: Configure the Oracle APT key
-  apt_key: url=https://www.virtualbox.org/download/oracle_vbox_2016.asc
-           state=present
+# - name: Configure the Oracle APT key
+#   ansible.builtin.get_url:
+#     url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+#     dest: /usr/share/keyrings/oracle_vbox_2016.asc
+#     mode: "0640"
 
-- name: Configure the VirtualBox APT repositories
-  apt_repository: repo="deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
-                  state=present
+- name: Add Virtualbox APT repository
+  ansible.builtin.deb822_repository:
+    name: virtualbox
+    types: [deb]
+    architectures: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+    uris: "https://download.virtualbox.org/virtualbox/debian"
+    signed_by: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
+    suites: ["{{ ansible_distribution_release }}"]
+    components: [contrib]
+    state: present
+    enabled: true
 
 - name: Install VirtualBox
-  apt: pkg=virtualbox state=present
+  ansible.builtin.apt:
+    pkg: virtualbox
+    state: present

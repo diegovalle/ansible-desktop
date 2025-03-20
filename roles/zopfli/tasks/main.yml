@@ -1,21 +1,29 @@
+---
 - name: Create temp directory for downloading zopfli
-  command: mktemp -d /tmp/zopfli.XXXXXX
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: zopfli
   register: mktemp_output
 
-- name: check installed
-  command: /usr/local/bin/zopfli -h
+- name: Check installed
+  ansible.builtin.command: /usr/local/bin/zopfli -h
   register: result
-  ignore_errors: True
-  changed_when: False
+  ignore_errors: true
+  changed_when: false
 
 - name: Clone zopfli repo
-  git: repo=https://github.com/google/zopfli dest={{ mktemp_output.stdout }} force=yes
+  ansible.builtin.git:
+    repo: https://github.com/google/zopfli
+    dest: "{{ mktemp_output.path }}"
+    force: "yes"
   when: result.rc != 0
 
-- name: make
-  command: make -j{{ ansible_processor_cores }} chdir={{ mktemp_output.stdout }}
+- name: Make
+  ansible.builtin.command:
+    chdir: "{{ mktemp_output.path }}"
+    cmd: make -j{{ ansible_processor_cores }}
   when: result.rc != 0
 
-- name: install
-  shell: if [ -f {{ mktemp_output.stdout }}/zopfli ]; then cp {{ mktemp_output.stdout }}/zopfli /usr/local/bin/zopfli; fi
+- name: Install
+  ansible.builtin.shell: if [ -f {{ mktemp_output.path }}/zopfli ]; then cp {{ mktemp_output.path }}/zopfli /usr/local/bin/zopfli; fi
   when: result.rc != 0

@@ -1,19 +1,19 @@
+---
 - name: Download rstudio .deb
-  get_url: url={{ rstudio_url }} dest=/tmp/rstudio.deb
+  ansible.builtin.get_url:
+    url: "{{ rstudio_url }}"
+    dest: /tmp/rstudio.deb
+    mode: "0640"
+
+- name: Get GPG key
+  ansible.builtin.shell: >
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 51C0B5BB19F92D60 ||
+    gpg --keyserver pgp.mit.edu --recv-keys 51C0B5BB19F92D60 ||
+    gpg --keyserver keyserver.ubuntu.com --recv-keys 51C0B5BB19F92D60
+
+- name: Verify r-studio archive
+  ansible.builtin.command: gpg --verify /tmp/rstudio.deb
 
 - name: Install rstudio
-  apt: deb="/tmp/rstudio.deb"
-
-# - name: Lookup which is the latest rstudio version
-#   shell: curl -s https://www.rstudio.com/products/rstudio/download2/ | grep -Po "(?<=\\.rstudio\\.org/rstudio-)([\\d\\.]+)(?=-{{ rstudio_arch }}\\.deb)" warn=false
-#   register: rstudio_ver
-
-#  - name: Create temp dir for downloading the rstudio .deb
-#    command: mktemp -d /tmp/ansible.XXXXXXXX
-#    register: mktemp_output
-
-#  - name: Download R Studio
-#    get_url: url='http://download1.rstudio.org/rstudio-{{ rstudio_ver.stdout }}-{{ rstudio_arch }}.deb' dest='{{mktemp_output.stdout}}/rstudio.deb'
-
-#  - name: Install R Studio
-#    apt: deb='{{mktemp_output.stdout}}/rstudio.deb'
+  ansible.builtin.apt:
+    deb: "/tmp/rstudio.deb"

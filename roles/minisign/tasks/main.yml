@@ -1,31 +1,39 @@
+---
 - name: Install libsodium
-  apt:
+  ansible.builtin.apt:
     pkg: libsodium-dev
     state: present
 
 - name: Install  build-essential
-  apt:
-    pkg:  build-essential
+  ansible.builtin.apt:
+    pkg: build-essential
     state: present
 
 - name: Install cmake
-  apt:
+  ansible.builtin.apt:
     pkg: cmake
     state: present
 
 - name: Create temp directory for downloading minisign
-  command: mktemp -d /tmp/minisign.XXXXXX
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: minisign
   register: mktemp_output
 
-- name: check installed
-  command: /usr/local/bin/minisign
+- name: Check installed
+  ansible.builtin.command: /usr/local/bin/minisign
   register: result
-  ignore_errors: True
-  changed_when: False
+  ignore_errors: true
+  changed_when: false
 
 - name: Clone minisign repo
-  git: repo=https://github.com/jedisct1/minisign dest={{ mktemp_output.stdout }} force=yes
+  ansible.builtin.git:
+    repo: https://github.com/jedisct1/minisign
+    dest: "{{ mktemp_output.path }}"
+    force: "yes"
   when: result.rc != 0
 
-- name: make minisign
-  shell: mkdir build && cd build && cmake .. && make && make install  chdir={{ mktemp_output.stdout }}
+- name: Make minisign
+  ansible.builtin.shell:
+    chdir: "{{ mktemp_output.path }}"
+    cmd: mkdir build && cd build && cmake .. && make && make install

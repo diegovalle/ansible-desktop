@@ -1,30 +1,39 @@
+---
 - name: Install apt-transport-https packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
-    - apt-transport-https
-    
+      - apt-transport-https
+
 - name: Install usbguard package
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    update_cache: yes
+    update_cache: true
   vars:
     packages:
-    - usbguard
-    
-- name: make sure all devices are allowed by default
-  lineinfile: dest=/etc/usbguard/usbguard-daemon.conf line="ImplicitPolicyTarget=allow" state=present regexp='^ImplicitPolicyTarget'
-  
-# sudo usbguard list-devices  
-# sudo usbguard generate-policy --no-hashes >  /etc/usbguard/rules.conf
-- name: make sure all devices are allowed by default
-  lineinfile: dest=/etc/usbguard/rules.conf line="allow *:*" state=present create=yes
-         
+      - usbguard
+
+- name: Make sure all devices are allowed by default
+  ansible.builtin.lineinfile:
+    dest: /etc/usbguard/usbguard-daemon.conf
+    line: "ImplicitPolicyTarget=allow"
+    state: present
+    regexp: "^ImplicitPolicyTarget"
+    mode: "0640"
+
+- name: Make sure all devices are allowed by default
+  ansible.builtin.lineinfile:
+    dest: /etc/usbguard/rules.conf
+    line: "allow *:*"
+    state: present
+    create: "yes"
+    mode: "0640"
+
 - name: Ensure usbguard is running and enabled as configured.
-  service:
+  ansible.builtin.service:
     name: "usbguard"
     state: started
-    enabled: yes
+    enabled: true
   when: docker is undefined

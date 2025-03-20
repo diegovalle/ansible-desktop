@@ -1,5 +1,4 @@
 ---
-
 - name: Ensure group "radmin" exists
   ansible.builtin.group:
     name: radmin
@@ -11,13 +10,12 @@
     groups: radmin
     append: true
 
-- name: Add R repository public key
-  ansible.builtin.apt_key:
-    id: E298A3A825C0D65DFD57CBB651716619E084DAB9
-    keyserver: keyserver.ubuntu.com
-    state: present
-  tags:
-    - r-repository-public-key
+- name: Add apt repository key.
+  ansible.builtin.get_url:
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xE298A3A825C0D65DFD57CBB651716619E084DAB9"
+    dest: /etc/apt/trusted.gpg.d/cran.asc
+    mode: '0644'
+    force: true
 
 - name: Add R repository
   ansible.builtin.apt_repository:
@@ -28,9 +26,24 @@
   tags:
     - r-repository-add
 
+# - name: Add R Repository
+#   ansible.builtin.deb822_repository:
+#     name: cran
+#     types: [deb]
+#     uris: "https://cloud.r-project.org/bin/linux/ubuntu"
+#     signed_by: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xE298A3A825C0D65DFD57CBB651716619E084DAB9"
+#     suites: "{{ ansible_facts['distribution_release'] | lower }}-cran40"
+#     components: []
+#     state: present
+#     enabled: yes
+
+- name: Run the equivalent of "apt-get update"
+  ansible.builtin.apt:
+    update_cache: true
+
 - name: Install Packages
   ansible.builtin.apt:
-    name: '{{ r_packages }}'
+    name: "{{ r_packages }}"
     state: latest
 
 - name: Creates .Rprofile with default repo
@@ -38,18 +51,18 @@
     dest: /home/{{ username }}/.Rprofile
     line: 'local({r <- getOption("repos");r["CRAN"] <- "https://cloud.r-project.org";options(repos = r)})'
     create: true
-    owner: '{{ username }}'
-    group: '{{ username }}'
-    mode: '0600'
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0600"
 
 - name: Creates .Renviron with default lib path
   ansible.builtin.lineinfile:
     dest: /home/{{ username }}/.Renviron
-    line: '#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages'
+    line: "#R_LIBS_SITE_USER==/home/{{ username }}/R/rpackages"
     create: true
-    owner: '{{ username }}'
-    group: '{{ username }}'
-    mode: '0600'
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0600"
 
 - name: Ensure /usr/local/lib/R/site-library/ is writable by radmin
   ansible.builtin.file:

@@ -1,34 +1,33 @@
+---
 - name: Install Packages
-  apt:
+  ansible.builtin.apt:
     pkg:
       - flatpak
     state: latest
-    
+
 - name: Add the flathub flatpak repository remote to the user installation
   community.general.flatpak_remote:
     name: flathub
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: user
-  become: yes
+  become: true
   become_user: "{{ username }}"
-    
+
 - name: Install the bitwarden flatpak from the gnome remote system-wide
   community.general.flatpak:
-    name: com.bitwarden.desktop 
+    name: com.bitwarden.desktop
     state: present
     method: user
-  become: yes
+  become: true
   become_user: "{{ username }}"
   when: docker is undefined
 
-  
 - name: Install the org.qgis.qgis  flatpak from the gnome remote system-wide
   community.general.flatpak:
-    name: org.qgis.qgis 
+    name: org.qgis.qgis
     state: present
     method: user
-  become: yes
+  become: true
   become_user: "{{ username }}"
   when: docker is undefined
-

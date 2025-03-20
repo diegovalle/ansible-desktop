@@ -1,33 +1,39 @@
-- name: Create temp directory for downloading keepassxc
-  command: mktemp -d /tmp/keepassxc.XXXXXX
+---
+- name: Create temp directory for downloading keepasxc
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: keepasxc
   register: mktemp_output
 
-- name: directories for keepassxc
-  shell: mkdir -p /home/{{ username }}/{{ apps_dir }}/
+- name: Directories for keepassxc
+  ansible.builtin.command: mkdir -p /home/{{ username }}/{{ apps_dir }}/
 
 - name: Download keepassxc
-  get_url:
-    url: https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage
-    dest: "/home/{{ username}}/{{ apps_dir }}/keepassxc.Appimage"
-    checksum: "sha256:https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage.DIGEST"
+  ansible.builtin.get_url:
+    url: >-
+      https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage
+    dest: "/home/{{ username }}/{{ apps_dir }}/keepassxc.Appimage"
+    checksum: >-
+      sha256:https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage.DIGEST
     owner: "{{ username }}"
-    group: root
+    group: "{{ username }}"
     mode: "u+rwx,g+rwx,o-rwx"
 
 - name: Download keepassxc signature
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage.sig
-    dest: "{{ mktemp_output.stdout }}/keepassxc.sig"
+    dest: "{{ mktemp_output.path }}/keepassxc.sig"
     owner: "{{ username }}"
-    group: root
+    group: "{{ username }}"
     mode: "u+rwx,g+rwx,o-rwx"
 
 - name: Get GPG key
-  shell: >
+  ansible.builtin.shell: >
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys CFB4C2166397D0D2 ||
     gpg --keyserver pgp.mit.edu --recv-keys CFB4C2166397D0D2 ||
     gpg --keyserver keyserver.ubuntu.com --recv-keys CFB4C2166397D0D2
 
 - name: Verify downloaded archive
-  command: gpg --verify keepassxc.sig "/home/{{ username}}/apps/keepassxc.Appimage" chdir={{ mktemp_output.stdout }}
-
+  ansible.builtin.command:
+    chdir: "{{ mktemp_output.path }}"
+    cmd: gpg --verify keepassxc.sig "/home/{{ username }}/apps/keepassxc.Appimage"

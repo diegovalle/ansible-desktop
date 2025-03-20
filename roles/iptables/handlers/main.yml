@@ -1,6 +1,10 @@
 ---
-- name: start iptables-persistent
-  ansible.builtin.service: name=netfilter-persistent state=started
+- name: Start iptables-persistent
+  ansible.builtin.service:
+    name: netfilter-persistent
+    state: started
 
-- name: restart iptables-persistent
-  ansible.builtin.service: name=netfilter-persistent state=restarted
+- name: Restart iptables-persistent
+  ansible.builtin.service:
+    name: netfilter-persistent
+    state: restarted

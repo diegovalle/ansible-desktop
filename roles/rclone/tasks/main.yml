@@ -1,61 +1,69 @@
+---
+- name: Create temp directory for downloading rclone
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: rclone
+  register: mktemp_output
 
-  - name: Create temp directory for downloading rclone
-    command: mktemp -d /tmp/rclone.XXXXXX
-    register: mktemp_output
+- name: Download rclone
+  ansible.builtin.get_url:
+    url: "https://downloads.rclone.org/{{ rclone_version }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
+    dest: "{{ mktemp_output.path }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
+    owner: root
+    group: root
+    mode: "0644"
 
-  - name: Download rclone
-    get_url:
-      url: "https://downloads.rclone.org/{{ rclone_version }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
-      dest: "{{ mktemp_output.stdout }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
-      owner: root
-      group: root
-      mode: 0644
-      
-  - name: Download rclone signature
-    get_url:
-      url: "https://downloads.rclone.org/{{ rclone_version }}/SHA256SUMS"
-      dest: "{{ mktemp_output.stdout }}/SHA256SUMS"
-      owner: root
-      group: root
-      mode: "u+rwx,g+rwx,o-rwx"
-      
-  - name: Get GPG key
-    shell: >
-      gpg --keyserver ha.pool.sks-keyservers.net --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA ||
-      gpg --keyserver pgp.mit.edu --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA ||
-      gpg --keyserver keyserver.ubuntu.com --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA
+- name: Download rclone signature
+  ansible.builtin.get_url:
+    url: "https://downloads.rclone.org/{{ rclone_version }}/SHA256SUMS"
+    dest: "{{ mktemp_output.path }}/SHA256SUMS"
+    owner: root
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
 
-  - name: Verify downloaded rclone archive
-    ansible.builtin.shell: h=$(gpg --decrypt SHA256SUMS) && echo "$h" | sha256sum - -c --ignore-missing chdir={{ mktemp_output.stdout }}
+- name: Get GPG key
+  ansible.builtin.shell: >
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA ||
+    gpg --keyserver pgp.mit.edu --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA ||
+    gpg --keyserver keyserver.ubuntu.com --recv-keys FBF737ECE9F8AB18604BD2AC93935E02FF3B54FA
 
-  - name: Unzip rclone
-    shell: unzip -j "{{ mktemp_output.stdout }}"/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip -d "{{ mktemp_output.stdout }}"
+- name: Verify downloaded rclone archive # noqa: no-free-form
+  ansible.builtin.shell: >-
+    set -o pipefail && h=$(gpg --decrypt SHA256SUMS) && echo "$h" |
+    sha256sum - -c --ignore-missing chdir={{ mktemp_output.path }}
+  args:
+    executable: /usr/bin/bash
 
-  - name: Move rclone to /usr/local/bin/
-    copy:
-      src={{ mktemp_output.stdout }}/rclone
-      dest=/usr/local/bin/rclone
-      owner=root
-      group=root
-      mode=0755
-      remote_src=true
+- name: Unzip rclone
+  ansible.builtin.unarchive:
+    src: "{{ mktemp_output.path }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
+    dest: "{{ mktemp_output.path }}"
 
-  - name: Make dir for local manpages
-    file:
-      path: /usr/local/share/man/man1
-      state: directory
-      mode: 0775
-      owner: root
-      group: staff
+- name: Move rclone to /usr/local/bin/
+  ansible.builtin.copy:
+    src: "{{ mktemp_output.path }}/rclone"
+    dest: /usr/local/bin/rclone
+    owner: root
+    group: root
+    mode: "0755"
+    remote_src: true
 
-  - name: Install manpage
-    copy:
-      src={{ mktemp_output.stdout }}/rclone.1
-      dest=/usr/local/share/man/man1/rclone.1
-      mode=0775
-      owner=root
-      group=staff
-      remote_src=true
+- name: Make dir for local manpages
+  ansible.builtin.file:
+    path: /usr/local/share/man/man1
+    state: directory
+    mode: "0775"
+    owner: root
+    group: staff
 
-  - name: mandb
-    command: mandb
+- name: Install manpage
+  ansible.builtin.copy:
+    src: "{{ mktemp_output.path }}/rclone.1"
+    dest: /usr/local/share/man/man1/rclone.1
+    mode: "0775"
+    owner: root
+    group: staff
+    remote_src: true
+
+- name: Mandb
+  ansible.builtin.command: mandb

@@ -1,14 +1,15 @@
+---
 - name: Does the Google apt file exist?
-  command: test -f /etc/apt/sources.list.d/google-chrome.list
+  ansible.builtin.command: test -f /etc/apt/sources.list.d/google-chrome.list
   register: google_apt_exists
-  ignore_errors: True
+  ignore_errors: true # noqa: [no-changed-when]
 
-- name: Install Google Key
-  apt_key:
+- name: Install Google Repository Key
+  ansible.builtin.apt_key:
     id: A040830F7FAC5991
     url: https://dl-ssl.google.com/linux/linux_signing_key.pub
     state: present
-  when: google_apt_exists.rc == 1
+  when: google_apt_exists.rc
 
 - name: Add Google Repo
   ansible.builtin.apt_repository:
@@ -16,13 +17,15 @@
     state: present
     update_cache: true
     filename: google-chrome
+  when: google_apt_exists.rc
 
 - name: Update apt cache
-  apt: update_cache=yes
-  when: google_apt_exists.rc == 1
+  ansible.builtin.apt:
+    update_cache: "yes"
+  when: google_apt_exists.rc
 
 - name: Install Packages
-  apt:
+  ansible.builtin.apt:
     pkg:
       - google-chrome-stable
     state: latest

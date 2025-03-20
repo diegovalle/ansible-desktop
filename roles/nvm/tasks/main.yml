@@ -1,14 +1,16 @@
+---
 - name: Install nvm
-  shell: >
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh | bash
+  ansible.builtin.shell: >
+    set -o pipefail && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh | bash
   args:
     creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
-  become: yes
+    executable: /usr/bin/bash
+  become: true
   become_user: "{{ username }}"
 
 - name: Source nvm
-  shell: >
-    /bin/bash -c "source ~/.nvm/nvm.sh"
-    creates=/home/{{ ansible_user_id }}/.nvm/alias
-  become: yes
+  ansible.builtin.command:
+    creates: "/home/{{ ansible_user_id }}/.nvm/alias"
+    cmd: /bin/bash -c "source ~/.nvm/nvm.sh"
+  become: true
   become_user: "{{ username }}"

@@ -1,4 +1,5 @@
-
-
-    - name: Spanish locale
-      locale_gen: name=es_ES.UTF-8 state=present
+---
+- name: Spanish locale
+  community.general.locale_gen:
+    name: es_ES.UTF-8
+    state: present

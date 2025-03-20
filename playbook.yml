@@ -27,6 +27,7 @@
 - name: Install System
   hosts: all
   vars:
+    apps_dir: "bin"
     ansible_python_interpreter: /usr/bin/python3
     allow_world_readable_tmpfiles: true
     username: diego
@@ -39,24 +40,26 @@
     rclone_version: v1.69.1
     # electrum_version: 4.5.8
   roles:
+    - emacs
+    - vscode
+    - virtualbox
+    - google-earth
+    - R
+    - r-studio
+    - docker
+    - gvisor
+    - google-chrome
     - iptables
     - tor-user
     - incron
-    - docker
     # - apparmor
     - software
     - spanish
     - nvm
-    - emacs
-    - R
-    - r-studio
     - oh-my-zsh
     - rclone # check architecture in tasks/rclone/vars/
     - zopfli
-    - google-chrome
-    - virtualbox
     - borg
-    - vscode
     - brave
     - minisign
     - keepassxc # check version
