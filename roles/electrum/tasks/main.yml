@@ -25,7 +25,7 @@
     owner: "{{ username }}"
     group: root
     mode: "u+rwx,g+rwx,o-rwx"
-    
+
 - name: Download sombernight_releasekey electrum signature
   get_url:
     url: "https://download.electrum.org/{{ electrum_version }}/electrum-{{ electrum_version }}-x86_64.AppImage.sombernight_releasekey.asc"
@@ -33,7 +33,7 @@
     owner: "{{ username }}"
     group: root
     mode: "u+rwx,g+rwx,o-rwx"
-    
+
 - name: Download Emzy electrum signature
   get_url:
     url: "https://raw.githubusercontent.com/spesmilo/electrum-signatures/master/{{ electrum_version }}/electrum-{{ electrum_version }}-x86_64.AppImage/electrum-{{ electrum_version }}-x86_64.AppImage.Emzy.asc"
@@ -53,20 +53,19 @@
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys  4AD64339DFA05E20B3F6AD51E7B748CDAF5E5ED9 ||
     gpg --keyserver pgp.mit.edu --recv-keys  4AD64339DFA05E20B3F6AD51E7B748CDAF5E5ED9 ||
     gpg --keyserver keyserver.ubuntu.com --recv-keys  4AD64339DFA05E20B3F6AD51E7B748CDAF5E5ED9
-    
+
 - name: Get Emzy GPG key
   shell: >
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0EEDCFD5CAFB459067349B23CA9EEEC43DF911DC ||
     gpg --keyserver pgp.mit.edu --recv-keys 0EEDCFD5CAFB459067349B23CA9EEEC43DF911DC ||
     gpg --keyserver keyserver.ubuntu.com --recv-keys 0EEDCFD5CAFB459067349B23CA9EEEC43DF911DC
 
-
 - name: Verify downloaded archive ThomasV
   command: gpg --verify electrum-{{ electrum_version }}-x86_64.AppImage.ThomasV.asc electrum-{{ electrum_version }}-x86_64.AppImage chdir={{ mktemp_output.stdout }}
-  
+
 - name: Verify downloaded archive sombernight_releasekey
   command: gpg --verify electrum-{{ electrum_version }}-x86_64.AppImage.sombernight_releasekey.asc electrum-{{ electrum_version }}-x86_64.AppImage chdir={{ mktemp_output.stdout }}
-  
+
 - name: Verify downloaded archive Emzy
   command: gpg --verify electrum-{{ electrum_version }}-x86_64.AppImage.Emzy.asc electrum-{{ electrum_version }}-x86_64.AppImage chdir={{ mktemp_output.stdout }}
 

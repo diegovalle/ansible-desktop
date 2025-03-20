@@ -10,29 +10,26 @@
 - name: Start postgresql server
   service: name=postgresql state=started enabled=yes
 
-
 - name: Install postgres packages
   apt:
     name: "{{ packages }}"
     update_cache: yes
   vars:
     packages:
-    - build-essential
-    - python-dev
-    - python-setuptools
-    - python-psycopg2
-    - postgresql-contrib-{{ postgre_version }}
-    - postgresql-{{ postgre_version }}-postgis-{{ postgis_version }}
-    - postgis
-    - libpq-dev
-    - postgresql-{{ postgre_version }}-pgrouting
-
+      - build-essential
+      - python-dev
+      - python-setuptools
+      - python-psycopg2
+      - postgresql-contrib-{{ postgre_version }}
+      - postgresql-{{ postgre_version }}-postgis-{{ postgis_version }}
+      - postgis
+      - libpq-dev
+      - postgresql-{{ postgre_version }}-pgrouting
 
 ## CREATE  EXTENSION pgrouting;
 ## SELECT * FROM pgr_version();
 
 # based on https://trac.osgeo.org/postgis/wiki/UsersWikiPostGIS15Ubuntu1110src
-
 
 - name: ensure template_postgis database exists
   become: yes
@@ -57,7 +54,6 @@
   become_user: postgres
   command: psql  -c "CREATE EXTENSION pg_stat_statements;"
   when: createdb_template_postgis.changed
-
 #- name: run the postgis SQL scripts
 #  become: yes
 #  become_user: postgres

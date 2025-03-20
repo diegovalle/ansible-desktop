@@ -3,10 +3,10 @@
   register: multiverse_installed
   when: ansible_distribution == 'Ubuntu'
   with_items:
-    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
-    - 'deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
-    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
-    - 'deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+    - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
+    - "deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
+    - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse"
+    - "deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse"
 
 - apt:
     pkg:
@@ -16,7 +16,7 @@
     state: latest
 
 - name: Accept License
-  shell: 'echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections'
+  shell: "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
 
 - apt: pkg=ttf-mscorefonts-installer state=latest
 
@@ -58,7 +58,7 @@
   command: unzip -jo {{mktemp_output.stdout}}/adobe_src_pro.zip "*.ttf" -d /usr/share/fonts/truetype warn=false
 
 - name: Update font cache
-  shell: sudo fc-cache -f -v 
+  shell: sudo fc-cache -f -v
 #- name: Clone nerd fonts
 #  git: repo=https://github.com/ryanoasis/nerd-fonts dest={{mktemp_output.stdout}}/nerd-fonts force=yes
 

@@ -2,10 +2,10 @@
 - name: skype | Install dependencies
   apt: pkg={{ item }} state=latest
   with_items:
-  - libqt4-dbus
-  - libqt4-network
-  - libqt4-xml
-  - libasound2
+    - libqt4-dbus
+    - libqt4-network
+    - libqt4-xml
+    - libasound2
 
 - name: add Skype  key
   apt_key:

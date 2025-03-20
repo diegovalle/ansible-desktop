@@ -1,58 +1,57 @@
-  - name: Create apps directory
-    become: yes
-    file:
-      path=/home/{{ username }}/{{ apps_dir }}
-      state=directory
-      owner="{{ username }}"
-      group="{{ username }}"
+- name: Create apps directory
+  become: yes
+  file: path=/home/{{ username }}/{{ apps_dir }}
+    state=directory
+    owner="{{ username }}"
+    group="{{ username }}"
 
-  - apt: name=firejail state=latest
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
+- apt: name=firejail state=latest
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
 
-  - name: Remove wikidpad directory
-    become: yes
-    file:
-      path=/home/{{ username }}/{{ apps_dir }}/WikidPad
-      state=absent
+- name: Remove wikidpad directory
+  become: yes
+  file: path=/home/{{ username }}/{{ apps_dir }}/WikidPad
+    state=absent
 
-  - name: Create temp dir for downloading the wikidpad
-    command: mktemp -d /tmp/wikidpad.XXXXXXXX
-    register: mktemp_output
+- name: Create temp dir for downloading the wikidpad
+  command: mktemp -d /tmp/wikidpad.XXXXXXXX
+  register: mktemp_output
 
-  - name: Download wikidpad
-    get_url:
-      url=http://downloads.sourceforge.net/project/wikidpad/wikidpad/{{ wikidpad_version }}/{{ wikidpad_version }}/WikidPad-2.2-src.zip?r=&ts=1471203809&use_mirror=ufpr
-      dest='{{mktemp_output.stdout}}/wikidpad.zip'
+- name: Download wikidpad
+  get_url:
+    url=http://downloads.sourceforge.net/project/wikidpad/wikidpad/{{ wikidpad_version }}/{{ wikidpad_version }}/WikidPad-2.2-src.zip?r=&ts=1471203809&use_mirror=ufpr
+    dest='{{mktemp_output.stdout}}/wikidpad.zip'
 
-  - name: Unzip wikidpad
-    become: yes
-    shell: "unzip {{ mktemp_output.stdout }}/wikidpad.zip -d /home/{{username}}/{{apps_dir}}/WikidPad" 
-    args:
-      warn: False
-    
-  - name: WikidPad directory with proper permissions
-    become: yes
-    file:
-      path=/home/{{ username }}/{{ apps_dir }}/WikidPad
-      state=directory
-      owner="{{username}}"
-      recurse=yes
+- name: Unzip wikidpad
+  become: yes
+  shell: "unzip {{ mktemp_output.stdout }}/wikidpad.zip -d /home/{{username}}/{{apps_dir}}/WikidPad"
+  args:
+    warn: False
 
-  - name: Create launcher
-    lineinfile:
-      dest: '/home/{{username}}/{{apps_dir}}/WikidPad/wikidpad.sh'
-      regexp: "{{ item.regexp }}"
-      line: "{{ item.line }}"
-      create: True
-    with_items:
-        - { regexp: '^export', line: 'export PYTHONPATH=$PYTHONPATH:lib/' }
-        - { regexp: '^cd ', line: 'cd ~/apps/WikidPad' }
-        - { regexp: '^python ', line: 'firejail --net=none --whitelist=~/Documents/ python WikidPad.py' }
+- name: WikidPad directory with proper permissions
+  become: yes
+  file: path=/home/{{ username }}/{{ apps_dir }}/WikidPad
+    state=directory
+    owner="{{username}}"
+    recurse=yes
 
-  - name: WikidPad launcher with proper permissions
-    become: yes
-    file:
-      path=/home/{{ username }}/{{ apps_dir }}/WikidPad/wikidpad.sh
-      owner="{{username}}"
-      mode=0755
-      state=file
+- name: Create launcher
+  lineinfile:
+    dest: "/home/{{username}}/{{apps_dir}}/WikidPad/wikidpad.sh"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    create: True
+  with_items:
+    - { regexp: "^export", line: "export PYTHONPATH=$PYTHONPATH:lib/" }
+    - { regexp: "^cd ", line: "cd ~/{{ apps_dir }}/WikidPad" }
+    - {
+        regexp: "^python ",
+        line: "firejail --net=none --whitelist=~/Documents/ python WikidPad.py",
+      }
+
+- name: WikidPad launcher with proper permissions
+  become: yes
+  file: path=/home/{{ username }}/{{ apps_dir }}/WikidPad/wikidpad.sh
+    owner="{{username}}"
+    mode=0755
+    state=file

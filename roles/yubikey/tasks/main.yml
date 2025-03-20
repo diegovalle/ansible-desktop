@@ -1,10 +1,10 @@
 - name: Add Google Repo
   ansible.builtin.apt_repository:
-    repo: 'ppa:yubico/stable'
+    repo: "ppa:yubico/stable"
     state: present
     update_cache: true
 
 - name: Install Packages
   apt:
-    name: ['yubioath-desktop']
+    name: ["yubioath-desktop"]
     state: latest

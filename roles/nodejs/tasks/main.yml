@@ -26,5 +26,4 @@
     update_cache: yes
 
 - name: Install simplehttpserver
-  npm:  name=simplehttpserver global=yes
-
+  npm: name=simplehttpserver global=yes

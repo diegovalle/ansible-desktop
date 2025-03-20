@@ -18,7 +18,7 @@
 - name: Create symlink from  ~/firejail/dropbox/Dropbox to ~/Dropbox
   file:
     src: /home/{{ username }}/firejail/dropbox/Dropbox
-    dest:  /home/{{ username }}/Dropbox
+    dest: /home/{{ username }}/Dropbox
     state: link
     owner: "{{ username }}"
     group: "{{ username }}"
@@ -34,7 +34,6 @@
     owner: "{{ username }}"
     group: "{{ username }}"
 
-
 - name: Configure dropbox autostart
   copy:
     src: dropbox.desktop
@@ -42,7 +41,6 @@
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: 0755
-
 # - name: Run firejail --private=~/firejail/dropbox '.dropbox-dist/dropboxd' to finish setup
 #   shell: ":"
 

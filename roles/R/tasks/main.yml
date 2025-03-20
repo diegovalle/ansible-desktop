@@ -14,7 +14,7 @@
   ansible.builtin.get_url:
     url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xE298A3A825C0D65DFD57CBB651716619E084DAB9"
     dest: /etc/apt/trusted.gpg.d/cran.asc
-    mode: '0644'
+    mode: "0644"
     force: true
 
 - name: Add R repository

@@ -40,31 +40,31 @@
     rclone_version: v1.69.1
     # electrum_version: 4.5.8
   roles:
+    - keepassxc # check version
+    - rclone # check architecture in tasks/rclone/vars/
     - emacs
     - vscode
     - virtualbox
-    - google-earth
     - R
     - r-studio
     - docker
     - gvisor
     - google-chrome
+    - google-earth
     - iptables
-    - tor-user
     - incron
     # - apparmor
     - software
     - spanish
     - nvm
     - oh-my-zsh
-    - rclone # check architecture in tasks/rclone/vars/
     - zopfli
     - borg
     - brave
     - minisign
-    - keepassxc # check version
     - usbguard
     - macchanger
     - flatpak
+    - tor-user
     # - electrum # check version
     # - unattended-upgrades

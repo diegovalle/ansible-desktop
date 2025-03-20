@@ -1,5 +1,5 @@
 - name: Restart apparmor
   when: testing != 'true'
   service:
-    name: 'apparmor'
-    state: 'restarted'
+    name: "apparmor"
+    state: "restarted"

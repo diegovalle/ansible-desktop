@@ -1,4 +1,0 @@
-- name: Restart apparmor
-  service:
-    name: 'dnscrypt'
-    state: 'restarted'

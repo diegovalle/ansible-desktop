@@ -3,13 +3,13 @@
     repo: ppa:ubuntugis/ubuntugis-unstable
     state: present
     update_cache: true
-    
+
 - name: updates a server
   apt: update_cache=yes autoremove=yes autoclean=yes
 
 - name: Install Packages
   apt:
-    name: '{{r_packages}}'
+    name: "{{r_packages}}"
     state: latest
 
 - name: Add sf R package

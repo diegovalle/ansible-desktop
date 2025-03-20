@@ -106,7 +106,6 @@
       - firejail
     state: latest
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
-
 # - name: pip install various utilities
 #   pip:
 #     name:

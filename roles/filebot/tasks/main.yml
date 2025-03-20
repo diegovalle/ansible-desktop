@@ -9,7 +9,7 @@
 - name: copy filebot deb
   copy:
     src: files/fb_4.7.9_amd64.deb
-    dest: '{{ mktemp_output.stdout }}/fb_4.7.9_amd64.deb'
+    dest: "{{ mktemp_output.stdout }}/fb_4.7.9_amd64.deb"
 
 # - name: Download filebot .deb
 #   get_url:

@@ -3,13 +3,11 @@
   apt: name=openjdk-8-jdk state=latest
 
 - name: Create apps directory
-  file:
-    path=/home/{{ username }}/{{ apps_dir }}
+  file: path=/home/{{ username }}/{{ apps_dir }}
     state=directory
 
 - name: Remove gephi directory
-  file:
-    path=/home/{{ username }}/{{ apps_dir }}/gephi
+  file: path=/home/{{ username }}/{{ apps_dir }}/gephi
     state=absent
 
 - name: Create temp directory for downloading gephi
@@ -26,15 +24,14 @@
     mode: 0644
 
 - name: untar gephi
-  shell: 'tar -xzf {{ mktemp_output.stdout }}/gephi.tar.gz -C /home/{{username}}/{{apps_dir}}/'
+  shell: "tar -xzf {{ mktemp_output.stdout }}/gephi.tar.gz -C /home/{{username}}/{{apps_dir}}/"
 
 - name: Move gephi
   command: mv /home/{{username}}/{{apps_dir}}/gephi-{{ gephi_version }} /home/{{username}}/{{ apps_dir }}/gephi
 
 - name: Gephi directory with proper permissions
   become: yes
-  file:
-    path=/home/{{ username }}/{{ apps_dir }}/gephi
+  file: path=/home/{{ username }}/{{ apps_dir }}/gephi
     state=directory
     owner="{{username}}"
     recurse=yes

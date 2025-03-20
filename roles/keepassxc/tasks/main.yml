@@ -36,4 +36,4 @@
 - name: Verify downloaded archive
   ansible.builtin.command:
     chdir: "{{ mktemp_output.path }}"
-    cmd: gpg --verify keepassxc.sig "/home/{{ username }}/apps/keepassxc.Appimage"
+    cmd: "gpg --verify keepassxc.sig /home/{{ username }}/{{ apps_dir }}/keepassxc.Appimage"

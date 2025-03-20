@@ -41,7 +41,7 @@
 
 - name: Move rclone to /usr/local/bin/
   ansible.builtin.copy:
-    src: "{{ mktemp_output.path }}/rclone"
+    src: "{{ mktemp_output.path }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}/rclone"
     dest: /usr/local/bin/rclone
     owner: root
     group: root
@@ -58,7 +58,7 @@
 
 - name: Install manpage
   ansible.builtin.copy:
-    src: "{{ mktemp_output.path }}/rclone.1"
+    src: "{{ mktemp_output.path }}/rclone-{{ rclone_version }}-linux-{{ rclone_arch }}/rclone.1"
     dest: /usr/local/share/man/man1/rclone.1
     mode: "0775"
     owner: root

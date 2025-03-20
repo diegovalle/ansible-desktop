@@ -7,10 +7,10 @@
     update_cache: yes
   vars:
     packages:
-    - build-essential
-    - python-setuptools
-    - python-dev
-    - git
+      - build-essential
+      - python-setuptools
+      - python-dev
+      - git
 
 - name: Add qgis repository key
   apt_key: url=https://qgis.org/downloads/qgis-2017.gpg.key state=present
@@ -42,6 +42,6 @@
     update_cache: yes
   vars:
     packages:
-    - qgis
-    - python-qgis
-    - qgis-plugin-grass
+      - qgis
+      - python-qgis
+      - qgis-plugin-grass

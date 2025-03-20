@@ -1,6 +1,6 @@
 ---
 # rstudio_ver : '0.99.903'
 # rstudio_arch: 'i386'
-filebot_url: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb'
-filebot_sha: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2.pkg.sha256'
-filebot_sig: 'https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb.asc'
+filebot_url: "https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb"
+filebot_sha: "https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2.pkg.sha256"
+filebot_sig: "https://get.filebot.net/filebot/FileBot_4.8.2/FileBot_4.8.2_amd64.deb.asc"

@@ -2,6 +2,6 @@
   pip:
     name: virtualenv
     executable: pip3
-    
+
 - name: pip gmvault
   pip: name=gmvault state=latest virtualenv=/home/{{ username }}/.virtualenvs/gmvault virtualenv_python=python3
