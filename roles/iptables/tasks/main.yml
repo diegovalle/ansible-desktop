@@ -4,6 +4,7 @@
     pkg: iptables-persistent
     state: present
     update_cache: "true"
+  changed_when: docker is undefined
   notify:
     - Start iptables-persistent
 
@@ -14,6 +15,7 @@
     owner: root
     group: root
     mode: "640"
+  changed_when: docker is undefined
   notify:
     - Restart iptables-persistent
 
@@ -24,6 +26,7 @@
     owner: root
     group: root
     mode: "640"
+  changed_when: docker is undefined
   notify:
     - Restart iptables-persistent
 

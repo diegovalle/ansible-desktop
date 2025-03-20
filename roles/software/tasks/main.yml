@@ -21,6 +21,7 @@
       - colordiff
       - coreutils
       - curl
+      - direnv
       - ffmpeg
       - filezilla
       - firefox

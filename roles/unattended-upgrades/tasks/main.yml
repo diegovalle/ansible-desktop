@@ -1,10 +1,22 @@
 - name: Install Packages
-  apt: name=unattended-upgrades state=latest
+  apt: 
+    name: unattended-upgrades 
+    state: latest
 
 - name: Add Periodic Configuration
-  copy: src=10periodic dest=/etc/apt/apt.conf.d/10periodic owner=root group=root mode=644
+  copy: 
+    src: 10periodic dest=/etc/apt/apt.conf.d/10periodic 
+    owner: root 
+    group: root 
+    mode: "0644"
 
 - name: Add Unattended Upgrade Configuration
-  copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades owner=root  group=root mode=644
+  copy: 
+    src: 50unattended-upgrades 
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades 
+    owner: root  
+    group: root 
+    mode: "0644"
+  changed_when: docker is undefined
   notify:
    - Restart Unattended Upgrades

@@ -3,16 +3,13 @@
   ansible.builtin.service:
     name: netfilter-persistent
     state: started
-  when: docker is undefined
 
 - name: Restart iptables-persistent
   ansible.builtin.service:
     name: netfilter-persistent
     state: restarted
-  when: docker is undefined
 
 - name: Restart tor
   ansible.builtin.service:
     name: tor
     state: restarted
-  when: docker is undefined

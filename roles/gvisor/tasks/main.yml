@@ -17,13 +17,14 @@
   ansible.builtin.apt:
     pkg:
       - runsc
+  changed_when: docker is undefined
   notify: Restart docker
 
 - name: Create /etc/docker
   ansible.builtin.file:
     path: /etc/docker
     state: directory
-    mode: '640'
+    mode: "640"
 
 - name: Check that the /etc/docker/daemon.json exists
   ansible.builtin.stat:
@@ -34,11 +35,11 @@
   ansible.builtin.file:
     path: /etc/docker/daemon.json
     state: touch
-    mode: '640'
+    mode: "640"
   when: not stat_result.stat.exists
 
 - name: Add runsc as a runtime to your Docker configuration (/etc/docker/daemon.json)
   ansible.builtin.copy:
     src: files/daemon.json
     dest: /etc/docker/daemon.json
-    mode: '644'
+    mode: "644"
