@@ -1,68 +1,59 @@
 ---
 - hosts: all
 
-
   tasks:
-  - name: install python3
-    raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3 python3-setuptools)
-  - name: updates a server
-    apt: update_cache=yes autoremove=yes autoclean=yes
-    vars:
-      ansible_python_interpreter: /usr/bin/python3
-  - name: Install Packages
-    apt:
-      pkg:
-        - aspell-es
-        - ca-certificates
-        - colordiff
-        - curl
-        - curl
-        - filezilla
-        - gcc
-        - gdebi
-        - gnupg
-        - hopenpgp-tools
-        - htop
-        - ispell
-        - jpegoptim
-        - libavcodec-extra
-        - libcairo2-dev
-        - libffi-dev
-        - libfreetype6-dev
-        - libmagick++-dev
-        - libpoppler-cpp-dev
-        - libssl-dev
-        - libudunits2-dev
-        - locales
-        - lynx
-        - man-db
-        - myspell-es
-        - nano
-        - optipng
-        - poedit
-        - python3-dev
-        - python3-sphinx
-        - python3-dev
-        - python3-libtorrent
-        - shellcheck
-        - siege
-        - sqlite3
-        - sqlitebrowser
-        - sudo
-        - traceroute
-        - typecatcher
-        - unzip
-        - virtualenvwrapper
-        - wget
-        - xclip
-        - zip
-      state: present
-      
-  - apt:
-      pkg:
-        - firejail
-      state: latest
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
+    - name: install python3
+      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3 python3-setuptools)
+    - name: updates a server
+      apt: update_cache=yes autoremove=yes autoclean=yes
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+    - name: Install Packages
+      apt:
+        pkg:
+          - aspell-es
+          - ca-certificates
+          - colordiff
+          - curl
+          - curl
+          - filezilla
+          - gcc
+          - gdebi
+          - gnupg
+          - hopenpgp-tools
+          - htop
+          - ispell
+          - jpegoptim
+          - locales
+          - lynx
+          - man-db
+          - myspell-es
+          - nano
+          - optipng
+          - poedit
+          - python3-dev
+          - python3-sphinx
+          - python3-dev
+          - python3-libtorrent
+          - shellcheck
+          - siege
+          - sqlite3
+          - sqlitebrowser
+          - sudo
+          - traceroute
+          - typecatcher
+          - unzip
+          - virtualenvwrapper
+          - wget
+          - xclip
+          - zip
+        state: present
+
+    - apt:
+        pkg:
+          - firejail
+        state: latest
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_version >= '16.04'
 
 - hosts: all
   vars:
@@ -71,7 +62,7 @@
     nvm_version: v0.37.2
     rclone_arch: amd64 # 386 # amd64
     rstudio_arch: amd64 # i386
-    rstudio_url:  https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.4.1717-amd64.deb
+    rstudio_url: https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.4.1717-amd64.deb
     pycharm_version: 2018.3.4
   roles:
     - brave
@@ -80,7 +71,7 @@
     - nodejs
     - nvm
     - oh-my-zsh
-    - pycharm # check version
+    #- pycharm # check version
     - r-studio
     - rclone
     #- ssh-config
