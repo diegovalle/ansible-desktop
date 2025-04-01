@@ -39,6 +39,8 @@
   ansible.builtin.shell: >-
     set -o pipefail && gpg --decrypt SHA2-256SUMS.sig &&
     sha256sum - -c --ignore-missing <SHA2-256SUMS chdir={{ mktemp_output.path }}
+  args:
+    executable: /usr/bin/bash
 
 - name: Move yt-dlp to apps dir
   ansible.builtin.copy:
