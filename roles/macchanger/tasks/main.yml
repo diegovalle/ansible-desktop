@@ -32,12 +32,12 @@
 
       [Install]
       WantedBy=multi-user.target
-    dest: /etc/systemd/system/changemac@.service
+    dest: /etc/systemd/system/changemac.service
     mode: "0640"
 
 # sudo systemctl enable changemac@enp0s25.service
 - name: Ensure macchanger is running and enabled as configured.
   ansible.builtin.service:
-    name: "macchanger"
+    name: "changemac"
     enabled: true
   when: docker is undefined

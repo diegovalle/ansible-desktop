@@ -12,7 +12,7 @@
   ansible.builtin.get_url:
     url: >-
       https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage
-    dest: "/home/{{ username }}/{{ apps_dir }}/keepassxc.Appimage"
+    dest: "/home/{{ username }}/{{ apps_dir }}/keepassxc"
     checksum: >-
       sha256:https://github.com/keepassxreboot/keepassxc/releases/download/{{ keypassxc_version }}/KeePassXC-{{ keypassxc_version }}-x86_64.AppImage.DIGEST
     owner: "{{ username }}"
@@ -36,4 +36,4 @@
 - name: Verify downloaded archive
   ansible.builtin.command:
     chdir: "{{ mktemp_output.path }}"
-    cmd: "gpg --verify keepassxc.sig /home/{{ username }}/{{ apps_dir }}/keepassxc.Appimage"
+    cmd: "gpg --verify keepassxc.sig /home/{{ username }}/{{ apps_dir }}/keepassxc"

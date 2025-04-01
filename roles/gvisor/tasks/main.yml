@@ -4,6 +4,7 @@
   ansible.builtin.deb822_repository:
     name: gvisor
     types: [deb]
+    architectures: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
     uris: https://storage.googleapis.com/gvisor/releases
     signed_by: "https://gvisor.dev/archive.key"
     components: [main]

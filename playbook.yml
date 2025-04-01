@@ -40,6 +40,7 @@
     rclone_version: v1.69.1
     # electrum_version: 4.5.8
   roles:
+    - yt-dlp
     - keepassxc # check version
     - rclone # check architecture in tasks/rclone/vars/
     - emacs
@@ -57,14 +58,14 @@
     - software
     - spanish
     - nvm
-    - oh-my-zsh
+    # - oh-my-zsh
     - zopfli
     - borg
     - brave
     - minisign
     - usbguard
-    - macchanger
     - flatpak
     - tor-user
+    - macchanger
     # - electrum # check version
     # - unattended-upgrades

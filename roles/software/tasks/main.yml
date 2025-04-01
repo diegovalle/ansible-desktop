@@ -26,9 +26,11 @@
       - filezilla
       - firefox
       - firejail
+      - flameshot
       - flatpak
       - gcc
       - gdebi
+      - geany
       - gimp
       - gnupg
       - gpicview
@@ -62,8 +64,10 @@
       - protobuf-compiler
       - proxychains
       - qpdfview
+      - qrencode
       - rename
       - ripgrep
+      - sassc
       - shellcheck
       - shfmt
       - siege
@@ -92,7 +96,8 @@
       - wget
       - whois
       - xclip
-      - xscreensaver
+      - xubuntu-desktop
+      - zbar-tools
       - zip
       - zpaq
       - zsh

@@ -3,6 +3,7 @@
   ansible.builtin.deb822_repository:
     name: google
     types: [deb]
+    architectures: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
     uris:
       - "http://dl.google.com/linux/earth/deb"
     signed_by: "https://dl.google.com/linux/linux_signing_key.pub"

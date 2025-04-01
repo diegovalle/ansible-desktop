@@ -11,6 +11,7 @@
   ansible.builtin.deb822_repository:
     name: vscode
     types: [deb]
+    architectures: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
     uris: "https://packages.microsoft.com/repos/code"
     signed_by: "https://packages.microsoft.com/keys/microsoft.asc"
     suites: [stable]

@@ -23,11 +23,11 @@
   become_user: "{{ username }}"
   when: docker is undefined
 
-- name: Install the org.qgis.qgis  flatpak from the gnome remote system-wide
-  community.general.flatpak:
-    name: org.qgis.qgis
-    state: present
-    method: user
-  become: true
-  become_user: "{{ username }}"
-  when: docker is undefined
+# - name: Install the org.qgis.qgis  flatpak from the gnome remote system-wide
+#   community.general.flatpak:
+#     name: org.qgis.qgis
+#     state: present
+#     method: user
+#   become: true
+#   become_user: "{{ username }}"
+#   when: docker is undefined

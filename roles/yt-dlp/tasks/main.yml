@@ -1,0 +1,50 @@
+---
+- name: Create temp directory for downloading yt-dlp
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: rclone
+  register: mktemp_output
+
+- name: Download yt-dlp
+  ansible.builtin.get_url:
+    url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux"
+    dest: "{{ mktemp_output.path }}/yt-dlp"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Download yt-dlp signature
+  ansible.builtin.get_url:
+    url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS"
+    dest: "{{ mktemp_output.path }}/SHA256SUMS"
+    owner: root
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Download yt-dlp signature
+  ansible.builtin.get_url:
+    url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS.sig"
+    dest: "{{ mktemp_output.path }}/SHA256SUMS"
+    owner: root
+    group: root
+    mode: "u+rwx,g+rwx,o-rwx"
+
+- name: Get GPG key
+  ansible.builtin.shell: >
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys AC0CBBE6848D6A873464AF4E57CF65933B5A7581 ||
+    gpg --keyserver pgp.mit.edu --recv-keys AC0CBBE6848D6A873464AF4E57CF65933B5A7581 ||
+    gpg --keyserver keyserver.ubuntu.com --recv-keys AC0CBBE6848D6A873464AF4E57CF65933B5A7581
+
+- name: Verify downloaded yt-dlp archive # noqa: no-free-form
+  ansible.builtin.shell: >-
+    set -o pipefail && gpg --decrypt SHA2-256SUMS.sig &&
+    sha256sum - -c --ignore-missing <SHA2-256SUMS chdir={{ mktemp_output.path }}
+
+- name: Move yt-dlp to apps dir
+  ansible.builtin.copy:
+    src: "{{ mktemp_output.path }}/yt-dlp"
+    dest: "/home/{{ username }}/{{ apps_dir }}/yt-dlp"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "u+rwx,g+rwx,o-rwx"
+    remote_src: true
