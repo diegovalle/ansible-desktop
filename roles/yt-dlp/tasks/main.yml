@@ -42,6 +42,9 @@
   args:
     executable: /usr/bin/bash
 
+- name: Directory for yt-dlp
+  ansible.builtin.command: mkdir -p /home/{{ username }}/{{ apps_dir }}/
+  
 - name: Move yt-dlp to apps dir
   ansible.builtin.copy:
     src: "{{ mktemp_output.path }}/yt-dlp_linux"
