@@ -38,7 +38,7 @@
 - name: Verify downloaded yt-dlp archive # noqa: no-free-form
   ansible.builtin.shell: >-
     set -o pipefail && gpg --decrypt SHA2-256SUMS.sig &&
-    cat SHA2-256SUMS | sha256sum - -c --ignore-missing chdir={{ mktemp_output.path }}
+    sha256sum -c SHA2-256SUMS --ignore-missing chdir={{ mktemp_output.path }}
   args:
     executable: /usr/bin/bash
 
