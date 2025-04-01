@@ -16,7 +16,7 @@
 - name: Download yt-dlp signature
   ansible.builtin.get_url:
     url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS"
-    dest: "{{ mktemp_output.path }}/SHA256SUMS"
+    dest: "{{ mktemp_output.path }}/SHA2-256SUMS"
     owner: root
     group: root
     mode: "u+rwx,g+rwx,o-rwx"
@@ -24,7 +24,7 @@
 - name: Download yt-dlp signature
   ansible.builtin.get_url:
     url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS.sig"
-    dest: "{{ mktemp_output.path }}/SHA256SUMS"
+    dest: "{{ mktemp_output.path }}/SHA2-256SUMS.sig"
     owner: root
     group: root
     mode: "u+rwx,g+rwx,o-rwx"
