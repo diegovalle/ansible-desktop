@@ -10,11 +10,13 @@
 
       - acl
       - alacarte
+      - age
       - apparmor
       - apparmor-profiles
       - apparmor-utils
       - aspell-es
       - audacious
+      - autokey-gtk
       - basez
       - ca-certificates
       - chromium-browser
@@ -96,6 +98,7 @@
       - wget
       - whois
       - xclip
+      - xxhash
       - xubuntu-desktop
       - zbar-tools
       - zip
