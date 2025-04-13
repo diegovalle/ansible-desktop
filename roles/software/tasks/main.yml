@@ -46,6 +46,7 @@
       - jpegoptim
       - jq
       - ledger
+      - linkchecker
       - linux-tools-generic
       - locales
       - lynx
