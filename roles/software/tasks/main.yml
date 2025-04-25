@@ -15,6 +15,7 @@
       - apparmor-profiles
       - apparmor-utils
       - aspell-es
+      - at
       - audacious
       - autokey-gtk
       - basez
