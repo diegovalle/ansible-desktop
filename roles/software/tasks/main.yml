@@ -105,6 +105,7 @@
       - xxhash
       - xubuntu-desktop
       - yubikey-manager
+      - ykcs11
       - zbar-tools
       - zip
       - zpaq
