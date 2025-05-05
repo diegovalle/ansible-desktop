@@ -104,7 +104,9 @@
       - xclip
       - xxhash
       - xubuntu-desktop
+      - yubioath-desktop
       - yubikey-manager
+      - yubikey-agent
       - ykcs11
       - zbar-tools
       - zip
