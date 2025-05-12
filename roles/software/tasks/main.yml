@@ -49,6 +49,7 @@
       - jpegoptim
       - jq
       - ledger
+      - libimage-exiftool-perl
       - linkchecker
       - linux-tools-generic
       - locales
