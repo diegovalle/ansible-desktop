@@ -50,6 +50,7 @@
       - jq
       - ledger
       - libimage-exiftool-perl
+      - libpam-u2f
       - linkchecker
       - linux-tools-generic
       - locales

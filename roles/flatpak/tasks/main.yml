@@ -14,9 +14,18 @@
   become: true
   become_user: "{{ username }}"
 
-- name: Install the bitwarden flatpak from the gnome remote system-wide
+- name: Install the bitwarden flatpak 
   community.general.flatpak:
     name: com.bitwarden.desktop
+    state: present
+    method: user
+  become: true
+  become_user: "{{ username }}"
+  when: docker is undefined
+  
+- name: Install Rymdport 
+  community.general.flatpak:
+    name: io.github.jacalz.rymdport
     state: present
     method: user
   become: true
